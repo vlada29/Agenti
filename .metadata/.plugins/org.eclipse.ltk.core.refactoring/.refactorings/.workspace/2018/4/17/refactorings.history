@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 9 resources" deleteContents="false" description="Delete 9 resources" element1="/AgentSystemEJB" element2="/ChatAppClient" element3="/ChatAppEAR" element4="/ChatAppEJB" element5="/ChatAppUtil" element6="/ChatAppWAR" element7="/UserAppEAR" element8="/UserAppEJB" element9="/UserAppWAR" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="9" stamp="1524557148622"/>
+</session>

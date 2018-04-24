@@ -1,0 +1,5 @@
+package com.chatapp.imp;
+
+public class HelloBean {
+
+}

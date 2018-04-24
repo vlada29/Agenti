@@ -1,0 +1,15 @@
+package com.chatapp.imp;
+
+import com.chatapp.interfaces.Hello;
+
+
+public class HelloBean implements Hello{
+	
+	HelloBean(){}
+	
+	@Override
+	public String sayHello() {
+		return "EJB WildFly9 ChatApp";
+	}
+
+}

@@ -1,0 +1,3 @@
+Context.INITIAL_CONTEXT_FACTORY = org.jnp.interfaces.NamingContextFactory<br>
+Context.URL_PKG_PREFIXES = org.jboss.naming:org.jnp.interfaces<br>
+Context.PROVIDER_URL = jnp://localhost:8080
