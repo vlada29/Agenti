@@ -1,0 +1,38 @@
+package tests;
+
+import java.io.File;
+import java.util.Hashtable;
+import java.util.Properties;
+
+import javax.ejb.EJB;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameClassPair;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+
+import com.chatapp.interfaces.Hello;
+
+
+ 
+ 
+public class Client {
+    public static void main(String[] args) throws NamingException {
+    	try {
+			Context context = new InitialContext();
+
+			System.err.println("Looking up for: " + LOOKUP_STRING);
+			Hello bean = (Hello)context.lookup(LOOKUP_STRING);
+		      
+	        System.out.println(bean.sayHello());
+
+	        context.close();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+
+    }
+    //ejb:com.istana.schedule.product.ear/com.istana.schedule.feature.ejb//EjbManager!com.istana.schedule.feature.Manager
+    private static final String LOOKUP_STRING = "ejb:/ChatAppEJB//HelloBean!"+Hello.class.getName();
+}
+

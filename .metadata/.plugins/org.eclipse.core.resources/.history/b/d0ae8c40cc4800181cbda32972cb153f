@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="ChatAppEJBClient">
+        <dependent-module archiveName="ChatAppWAR.jar" deploy-path="/" handle="module:/resource/ChatAppWAR/ChatAppWAR">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="ChatAppEJBClient"/>
+        <property name="java-output-path" value="/ChatAppEJBClient/build/classes"/>
+    </wb-module>
+</project-modules>
