@@ -7,9 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserprofileComponent implements OnInit {
 
-  constructor() { }
+	public user = null;
+	public groups = null;
+	public pronadjen = true;
+	public rezultatPretrage = null;
 
-  ngOnInit() {
-  }
+	constructor() {
+
+	}
+
+	ngOnInit() {
+	    
+	}
+
+	addFriend(){
+		this.pronadjen = false;
+		this.rezultatPretrage = null;
+	}
 
 }

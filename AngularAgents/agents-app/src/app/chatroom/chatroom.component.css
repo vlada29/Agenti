@@ -1,0 +1,21 @@
+div.messages{
+    height: 500px;
+    overflow: scroll;
+}
+
+div.newConvUsers{
+    height: 150px;
+    overflow: scroll;
+}
+
+button.btn{
+    width: 30%;
+    margin-left: 35%;
+    margin-right: 35%
+}
+
+#newCon{
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%
+}

@@ -1,36 +1,53 @@
-<h1>WebSocket Exaple 1</h1>
-        <p>In this example, you connect to a specific WebSocket URL, built with
-            the "key" parameter. You will receive the messages sent to the
-            server by other sessions with the same "key".</p>
-        <p>Also, you can send messages to sessions with other keys using the
-            REST endpoint.</p>
-        <p>Open some other tabs and try using the same and/or different keys: <a href="example1.html" target="_blank">example1.html</a></p>
-        <p><a href="index.html">&lt; Back</a></p>
-        <div class="table">
-            <div>
-                <span>Your Key:</span>
-                <input id="keyToConnect" placeholder="K1"/>
-            </div>
-            <button (click)="connect()" class="button">Connect Using This Key</button>
+<div class="row">
+  <div class="col-sm-4">
+    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo" id="newCon">New Conversation</button>
+    <hr>
+    <div class="panel panel-primary collapse" id="demo">
+      <div class="panel-heading">Start new conversation</div>
+      <div class="panel-body">
+        <div class="newConvUsers">
+          <div class="checkbox">
+            <label><input type="checkbox" value="">Jon</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" value="">Steve</label>
+          </div>
+          <div class="checkbox disabled">
+            <label><input type="checkbox" value="">Suzan</label>
+          </div>
         </div>
-        <div class="table">
-            <div>WebSocket message to same key sessions</div>
-            <div>
-                <span>Message:</span>
-                <input id="messageToKey"/>
-            </div>
-            <button (click)="sendMessageToKey()" class="button">Send To This Key</button>
+        <hr>
+        <div class="form-group">
+          <label for="usr">Group name:</label>
+          <input type="text" class="form-control" id="usr">
         </div>
-        <form method="post" action="jaxrs/v1/messages/example1/send" class="table">
-            <div>REST endpoint to other keys</div>
-            <div>
-                <span>Other key:</span>
-                <input type="text" name="key" placeholder="K2" id="otherKey"/>
-            </div>
-            <div>
-                <span>Message:</span>
-                <input type="text" name="message" id="messageToOtherKey"/>
-            </div>
-            <input type="submit" value="Send To Other Key" onclick="onFormSubmit();" class="button">
-        </form>
-        <div id="messages"></div>
+        <hr>
+        <button type="button" class="btn btn-primary" (click)="sendMsg()">OK</button>
+      </div>  
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Conversations</div>
+        <div class="panel-body">
+          <div class="list-group">
+            <a class="list-group-item" (click)="openChat($event)">Jon</a>
+            <a class="list-group-item">Steve</a>
+            <a class="list-group-item">Suzan</a>
+          </div>
+        </div>  
+      </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Chat</div>
+      <div class="panel-body">
+        <div class="messages" id="messagesDiv">
+
+        </div>
+        <hr>
+        <div class="form-group" (keypress)="sendMsg($event,chatbubble.value)">
+          <input class="form-control input-lg" type="text" #chatbubble>
+        </div>
+      </div>  
+    </div>
+  </div> 
+</div>
