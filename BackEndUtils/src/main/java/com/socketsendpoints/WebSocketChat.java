@@ -1,4 +1,4 @@
-package com.matruskan.websocketexample.example1;
+package com.socketsendpoints;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,15 +17,11 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author matruskan
- */
 @Singleton
 @ServerEndpoint("/example1/{key}")
-public class WebSocketEndpointExample1 {
+public class WebSocketChat {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketEndpointExample1.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketChat.class);
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
 
     @OnMessage

@@ -8,6 +8,8 @@ import { RegisterComponent } from './register/register.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { UserServiceService } from './user-service.service';
+import { SocketsServiceService } from './sockets-service.service';
 
 
 
@@ -23,7 +25,7 @@ import { AppRoutingModule } from './/app-routing.module';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [RestServiceService],
+  providers: [RestServiceService, UserServiceService, SocketsServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
