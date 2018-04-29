@@ -4,11 +4,12 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { Routes, RouterModule } from '@angular/router';
 import { ChatroomComponent } from './chatroom/chatroom.component';
+import { UserprofileComponent } from './userprofile/userprofile.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChatroomComponent
+    component: UserprofileComponent
   },
   {
     path: 'login',

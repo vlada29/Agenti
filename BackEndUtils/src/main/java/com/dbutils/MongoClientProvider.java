@@ -17,7 +17,8 @@ public class MongoClientProvider {
 	private MongoClient mongoClient = null;
 	
 	@Lock(LockType.READ)
-	public MongoClient getMongoClient(){	
+	public MongoClient getMongoClient(){
+		System.out.println("Pozvan get");
 		return mongoClient;
 	}
 	
