@@ -6,17 +6,17 @@
         Username: k <br>
         Firstname: k <br>
         Lastname: k <br>
-      </div>  
+      </div>
     </div>
   </div>
   <div class="col-sm-8">
     <div class="panel panel-primary">
         <div class="panel-heading">Add friends</div>
         <div class="panel-body">
-          Search by:  
-          <label class="radio-inline"><input type="radio" name="optradio" (click)="setSearchType('Username')">Username</label>
-          <label class="radio-inline"><input type="radio" name="optradio" (click)="setSearchType('Firstname')">Firstname</label>
-          <label class="radio-inline"><input type="radio" name="optradio" (click)="setSearchType('Lastname')">Lastname</label>
+          Search by:
+          <label class="radio-inline"><input type="radio" name="optradio" (click)="setSearchType('username')">Username</label>
+          <label class="radio-inline"><input type="radio" name="optradio" (click)="setSearchType('firstname')">Firstname</label>
+          <label class="radio-inline"><input type="radio" name="optradio" (click)="setSearchType('lastname')">Lastname</label>
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="search" #stext>
             <div class="input-group-btn">
@@ -30,7 +30,7 @@
             Lastname: {{rezultatPretrage.lastname}} <br>
             <button type="button" class="btn btn-primary" (click)="sendMsg()">Add friend</button>
           </div>
-        </div>  
+        </div>
     </div>
   </div>
 </div>
