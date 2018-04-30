@@ -3,6 +3,7 @@ package com.socketsendpoints;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.jms.TextMessage;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -10,7 +11,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.dbutils.UserFinderInterface;
+import com.dbutils.UserFinderInterfaceChat;
 
 
 @Singleton
@@ -19,7 +20,7 @@ public class WebSocketFindFriends {
 	private Session session;
 	
 	@EJB
-	UserFinderInterface uf;
+	UserFinderInterfaceChat uf;
 	
 	@OnOpen
 	public void connect(Session session){
@@ -38,8 +39,11 @@ public class WebSocketFindFriends {
 			@PathParam("type") String type,
 			@PathParam("value") String value) {
 		
+		
+		TextMessage msgs;
+		
 		System.out.println("Search by: "+type+" search for: "+value);
-
+		System.out.println("Da li se promenio?");
 		String u = uf.searchForUser(type, value);
 		System.out.println(u);
 		
