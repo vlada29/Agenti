@@ -23,12 +23,14 @@ public class MessageRest {
     @POST
     @Path("/send")
     public void sendMessage(@FormParam("key") String key, @FormParam("message") String message) {
+    	
         webSocketEndpoint.send(message, key);
     }
     
     @GET
     @Path("/keys")
     public String keys() {
+    	System.out.println("iz user app resta");
         return webSocketEndpoint.getKeys().toString();
     }
 }

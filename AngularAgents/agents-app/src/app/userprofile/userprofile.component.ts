@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IUser } from '../IUser';
 
 @Component({
   selector: 'app-userprofile',
@@ -9,21 +10,19 @@ export class UserprofileComponent implements OnInit {
 
 	public user = null;
 	public groups = null;
-	public pronadjen = true;
+	public pronadjen = false;
 	public rezultatPretrage = null;
 	public searchType = 'username';
 	private ws;
-
 	constructor() {
 
 	}
 
 	ngOnInit() {
-	    this.pronadjen = false;
 	}
 
 	addFriend(){
-		this.pronadjen = false;
+		console.log(this.rezultatPretrage);
 	}
 
 	setSearchType(value){
@@ -35,16 +34,15 @@ export class UserprofileComponent implements OnInit {
 
 	    this.ws = new WebSocket('ws://localhost:8080/websocket-example/findFriend/'+this.searchType+'/'+value);
 	    this.ws.onopen = () => this.ws.send('alohaaa');
-	    this.ws.onmessage = function(event) {
-	    	this.rezultatPretrage = event.data;
-	    	this.pronadjen = true;
+	    this.ws.onmessage = (event) => {this.pronadjen = true; this.rezultatPretrage = JSON.parse(event.data); console.log(this.rezultatPretrage)}
 
-	    	console.log(this.pronadjen);
+	    
 
-	    }
-
-	    console.log(this.pronadjen);
-
+	}
+	
+	
+	namesti(data){
+		this.rezultatPretrage = data;
 	}
 
 

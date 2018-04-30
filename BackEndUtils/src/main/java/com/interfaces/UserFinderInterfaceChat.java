@@ -1,4 +1,4 @@
-package com.dbutils;
+package com.interfaces;
 
 import javax.ejb.Local;
 

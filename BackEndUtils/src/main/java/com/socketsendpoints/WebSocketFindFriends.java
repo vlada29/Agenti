@@ -11,7 +11,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.dbutils.UserFinderInterfaceChat;
+import com.interfaces.UserFinderInterfaceChat;
 
 
 @Singleton

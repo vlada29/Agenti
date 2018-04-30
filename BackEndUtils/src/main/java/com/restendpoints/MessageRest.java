@@ -29,6 +29,7 @@ public class MessageRest {
     @GET
     @Path("/keys")
     public String keys() {
+    	System.out.println("Message rest woriking");
         return webSocketEndpoint.getKeys().toString();
     }
 }

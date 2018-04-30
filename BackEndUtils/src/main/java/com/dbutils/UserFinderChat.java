@@ -11,6 +11,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.interfaces.UserFinderInterfaceChat;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -25,7 +26,8 @@ public class UserFinderChat implements UserFinderInterfaceChat{
 	public String searchForUser(String searchBy, String value) {
 		System.out.println("Dosao u search for user");
 		ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target("http://localhost:8080/UserApp/jaxrs/findUser/getU");
+		System.out.println("Trazimo: "+"http://localhost:8080/RESTApp/rest/demo/test");
+        ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/findUser/getU/"+searchBy+"/"+value);
         Response response = target.request().get();
         String ret = response.readEntity(String.class);
         System.out.println("Pronadjen user: " + ret);

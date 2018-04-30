@@ -16,6 +16,7 @@ public class FindUserReciever implements MessageListener {
 	@Override
 	public void onMessage(Message arg0) {
 		TextMessage tmsg = (TextMessage)arg0;
+		
 		System.out.println("Primo poruku ");
 	
 	}
