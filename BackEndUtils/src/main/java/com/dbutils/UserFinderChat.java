@@ -26,7 +26,7 @@ public class UserFinderChat implements UserFinderInterfaceChat{
 	public String searchForUser(String searchBy, String value) {
 		System.out.println("Dosao u search for user");
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		System.out.println("Trazimo: "+"http://localhost:8080/RESTApp/rest/demo/test");
+		System.out.println("Trazimo: "+"http://localhost:8080/user-app/jaxrs/findUser/getU/");
         ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/findUser/getU/"+searchBy+"/"+value);
         Response response = target.request().get();
         String ret = response.readEntity(String.class);

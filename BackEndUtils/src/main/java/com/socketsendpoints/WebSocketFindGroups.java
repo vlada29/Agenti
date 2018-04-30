@@ -1,9 +1,7 @@
 package com.socketsendpoints;
 
-
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
-import javax.jms.TextMessage;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -14,14 +12,13 @@ import javax.websocket.server.ServerEndpoint;
 import com.interfaces.GroupFinderInterface;
 import com.interfaces.UserFinderInterfaceChat;
 
-
 @Singleton
-@ServerEndpoint("/findFriend/{type}/{value}")
-public class WebSocketFindFriends {
-	private Session session;
+@ServerEndpoint("/findGroups/{user}")
+public class WebSocketFindGroups {
+private Session session;
 	
 	@EJB
-	UserFinderInterfaceChat uf;
+	GroupFinderInterface gf;
 	
 	@OnOpen
 	public void connect(Session session){
@@ -36,13 +33,13 @@ public class WebSocketFindFriends {
 	}
 	
 	@OnMessage
-	public void onMessage(String msg, @PathParam("type") String type,@PathParam("value") String value) {
-
-		String u = uf.searchForUser(type, value);
-
+	public void onMessage(String msg, @PathParam("user") String user) {
+		
+		System.out.println("Find groups for: "+user);
+		String u = gf.getGroups(user);
+		System.out.println(u);
 		
 		this.session.getAsyncRemote().sendText(u);
 	}
-	
 	
 }

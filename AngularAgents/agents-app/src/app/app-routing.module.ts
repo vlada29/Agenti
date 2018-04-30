@@ -9,7 +9,7 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
 const routes: Routes = [
   {
     path: '',
-    component: ChatroomComponent
+    component: UserprofileComponent
   },
   {
     path: 'login',
