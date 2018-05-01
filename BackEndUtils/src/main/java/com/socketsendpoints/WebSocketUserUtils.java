@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.jms.JMSException;
+import javax.naming.NamingException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -24,7 +26,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 
 import com.dbutils.MongoClientProvider;
-
+import com.interfaces.LoginInterface;
+import com.jms.JMSInterface;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -33,17 +36,18 @@ import com.mongodb.client.model.Filters;
 
 
 @Singleton
-@ServerEndpoint("/uservice/{action}/{username}/{password}")
+@ServerEndpoint("/login/{username}/{password}")
 public class WebSocketUserUtils {
 	private Session session;
 	
 	@EJB
-	MongoClientProvider mongoClientProvider;
+	LoginInterface lf;
 	
 	@OnOpen
 	public void connect(Session session){
 		this.session = session;
 		System.out.println("Session: " + session);
+		System.out.println("login");
 	}
 	
 	@OnClose
@@ -54,32 +58,21 @@ public class WebSocketUserUtils {
 	
 	@OnMessage
 	public void onMessage(String msg,  
-			@PathParam("action") String action,
 			@PathParam("username") String username,
-			@PathParam("password") String password) throws JsonGenerationException, JsonMappingException, IOException{
-		MongoClient mongoClient = mongoClientProvider.getMongoClient();
-		MongoDatabase db = mongoClient.getDatabase("test");		
-		MongoCollection<Document> users = db.getCollection("users");
-		if(action.equals("login")){
-			BasicDBObject criteria = new BasicDBObject();
-			criteria.append("username", "username");
-			criteria.append("password", "password");
-			if(users.find(criteria)!=null){
-				ObjectMapper mapper = new ObjectMapper();
-				String jsonInString = mapper.writeValueAsString(users.find(Filters.regex("username", username)));
-				this.session.getAsyncRemote().sendText(jsonInString);
-			} else {
-				this.session.getAsyncRemote().sendText(null);
-			}
-			
-		} else if (action.equals("register")){
-			if(users.find(Filters.regex("username", username)) == null){
-				Document user = new Document("username", username)
-						.append("password", password)
-						.append("host", new BasicDBObject("",""));
-				users.insertOne(user);
-				this.session.getAsyncRemote().sendText("registered");
-			}
+			@PathParam("password") String password) throws JsonGenerationException, JsonMappingException, IOException, JMSException, NamingException{
+		System.out.println("WSendpoint Login");
+		String userStr = null;
+		try {
+			userStr = lf.login(username, password);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("UserStr: " + userStr);
+		if(userStr!=null){
+			this.session.getAsyncRemote().sendText(userStr);
+		} else {
+			this.session.getAsyncRemote().sendText("ERROR");
 		}
 	}
 }

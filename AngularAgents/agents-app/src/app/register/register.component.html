@@ -2,7 +2,12 @@
 <div class="logo"></div>
 <div class="login-block">
     <h1>Register</h1>
-    <input type="text" value="" placeholder="Username" id="username" />
-    <input type="password" value="" placeholder="Password" id="password" />
-    <button>Sign Up</button>
+    <input #username type="text" value="" placeholder="Username" id="username" />
+    <input #firstname type="text" value="" placeholder="First Name" id="firstname" />
+    <input #lastname type="text" value="" placeholder="Lastname" id="lastname" />
+    <input #password type="password" value="" placeholder="Password" id="password" />
+    <button (click) = "register($event)">Sign Up</button>
+
+    <br><br>
+    <a routerLink="/login">Sign In</a>
 </div>

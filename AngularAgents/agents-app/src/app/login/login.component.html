@@ -3,8 +3,9 @@
 <div class="login-block">
     <h1>Login</h1>
 
-        <input type="text" value="" placeholder="Username" name="username" id="username" />
-        <input type="password" value="" placeholder="Password" name="psw" id="password" />
+        <input #username type="text" value="" placeholder="Username" name="username" id="username" />
+        <input #password type="password" value="" placeholder="Password" name="psw" id="password" />
         <button (click) = "login($event)">Sign In</button>
-
+<br><br>
+<a routerLink="/register">Register</a>
 </div>

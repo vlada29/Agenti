@@ -21,7 +21,7 @@ export class ChatroomComponent implements OnInit {
 
      this.ws.onopen = function() {
          //appendMessage('info', 'WebSocket connection opened!');
-         alert('Webscoket conn opened!');
+        // alert('Webscoket conn opened!');
      }
 
      this.ws.onmessage = function(event) {

@@ -1,4 +1,3 @@
-import java.io.Console;
 
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '../IUser';
@@ -29,11 +28,11 @@ export class UserprofileComponent implements OnInit {
 
 	addFriend(){
 		console.log(this.rezultatPretrage);
-		
+
 		this.ws2 = new WebSocket('ws://localhost:8080/websocket-example/addFriend/'+this.rezultatPretrage.username+'/'+this.rezultatPretrage.username);
 		this.ws2.onopen = () => this.ws2.send('ok');
 		this.ws2.onmessage = (event) => {console.log(event.data);}
-		
+
 	}
 
 	setSearchType(value){
@@ -47,16 +46,16 @@ export class UserprofileComponent implements OnInit {
 	    this.ws.onopen = () => this.ws.send('alohaaa');
 	    this.ws.onmessage = (event) => {this.pronadjen = true; this.rezultatPretrage = JSON.parse(event.data);}
 
-	    
+
 
 	}
-	
-	
+
+
 	namesti(data){
 		this.rezultatPretrage = data;
 	}
-	
-	
+
+
 
 
 

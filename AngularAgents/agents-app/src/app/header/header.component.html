@@ -1,0 +1,22 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+
+
+     <div *ngIf="isLoggedIn() then userpagebutton; else loginpagebutton;"></div>
+
+     <ng-template #loginpagebutton>
+    	<ul class="nav navbar-nav navbar-right">
+		  <li><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+		</ul>
+	 </ng-template>
+
+     <ng-template #userpagebutton>
+     	<ul class="nav navbar-nav navbar-right">
+     		<li><a routerLink="/chatroom">Chatroom</a></li>
+     		<li><a routerLink="/userprofile"> <span class="glyphicon glyphicon-user"></span> {{getUsername()}} </a></li>
+			<li><a routerLink="/logout">Logout</a></li>
+		</ul>
+	 </ng-template>
+
+  </div>
+</nav>

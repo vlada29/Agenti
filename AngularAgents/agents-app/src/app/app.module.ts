@@ -10,7 +10,9 @@ import { ChatroomComponent } from './chatroom/chatroom.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { UserServiceService } from './user-service.service';
 import { SocketsServiceService } from './sockets-service.service';
-
+import { HeaderComponent } from './header/header.component';
+import { LogoutComponent } from './logout/logout.component';
+import { AuthGuard} from './auth.guard';
 
 
 @NgModule({
@@ -19,13 +21,15 @@ import { SocketsServiceService } from './sockets-service.service';
     LoginComponent,
     RegisterComponent,
     UserprofileComponent,
-    ChatroomComponent ],
+    ChatroomComponent ,
+    HeaderComponent,
+    LogoutComponent ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [RestServiceService, UserServiceService, SocketsServiceService],
+  providers: [RestServiceService, UserServiceService, SocketsServiceService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
