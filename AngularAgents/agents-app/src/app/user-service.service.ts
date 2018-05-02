@@ -56,8 +56,8 @@ export class UserServiceService {
   }
 
   register(username, firstname, lastname, password) {
-      this.ws = new WebSocket('ws://localhost:8080/websocket-example/register/'+username+'/'+firstname+'/'+lastname+'/'+password);
-      this.ws.onopen = () => this.ws.send('alohaaa');
+      this.ws = new WebSocket('ws://localhost:8080/websocket-example/register/'+username+'/'+password+'/'+firstname+'/'+lastname);
+      this.ws.onopen = () => this.ws.send('');
       this.ws.onmessage = (event) => {
           console.log(event.data);
           if(event.data!='ERROR'){

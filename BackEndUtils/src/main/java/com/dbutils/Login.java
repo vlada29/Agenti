@@ -1,5 +1,7 @@
 package com.dbutils;
 
+import java.util.ArrayList;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jms.Connection;
@@ -19,45 +21,70 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.app.JaxRSActivator;
+import com.google.gson.Gson;
 import com.interfaces.LoginInterface;
 import com.jms.JMSInterface;
 import com.jms.JMSProducer;
 import com.jms.JMSTopic;
-import com.jms.TestTopic;
 import com.model.Host;
+import com.model.User;
+import com.xmlconfig.XMLParser;
 @Stateless
 public class Login implements LoginInterface{
 	//@EJB
 	//JMSInterface jmsi;
 	
+	private ArrayList<String> activeUsers;
+	
 	@SuppressWarnings("unused")
 	@Override
 	public String login(String username, String password) throws JMSException, NamingException {
-		if(true){
+		String ret = null;
+		if(!JaxRSActivator.getHost().getAlias().equals("Master")){
+			System.out.println("Non master.");
+			
 			ResteasyClient client = new ResteasyClientBuilder().build();
 	        ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/restendpoints/login/"+username+"/"+password);
 	        Response response = target.request().get();
-	        String ret = response.readEntity(String.class);
-	        System.out.println("Login success? -> " + ret);
-	
-	        if(ret!=null) {
-	        	return ret;
-	        }else {
-	        	return null;
-	        }
+	        ret = response.readEntity(String.class);
+	        System.out.println("Login as: " + ret);
+    
 		} else {
-			JMSTopic tt = new JMSTopic();
+			System.out.println("Master.");
+			//TODO JMS instead REST
+			//System.out.println("JMS search");
+			//JMSTopic tt = new JMSTopic();
 			//String ret = tt.login(username, password, new Host("",""));
 			
-			System.out.println("JMS search");
-			return null;
-//			if(ret!=null) {
-//	        	return ret;
-//	        }else {
-//	        	return null;
-//	        }
+			ResteasyClient client = new ResteasyClientBuilder().build();
+	        ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/restendpoints/login/"+username+"/"+password);
+	        Response response = target.request().get();
+	        ret = response.readEntity(String.class);
+	        System.out.println("Login as: " + ret);
+	        ///////////////////////////////////////////////////////
+			
+	        //azuriraj
+			activeUsers.add((new Gson().fromJson(ret, User.class)).getUsername());
+	        
+			System.out.println("Notify ChatApp nodes:");
+        	XMLParser parser = new XMLParser();
+        	for(Host h : parser.getAllHosts()){
+        		//rest
+    			System.out.println("Rest to " + h.toString() );
+    			ResteasyClient client_for_chat_app = new ResteasyClientBuilder().build();				//TODO change port
+    	        ResteasyWebTarget target_chat_app = client_for_chat_app.target("http://"+h.getAddress()+":8080/websocket-example/ChatAppRestEndPoint/updateActiveUsers/"+username);
+    	        Response response_activated = target_chat_app.request().get();
+    	        String activated = response_activated.readEntity(String.class);
+ 
+        	}
+			
+
 			
 		}
+		
+		//vracanje na websocket i azuriranje angulara
+        return ret;
 	}
 
 }

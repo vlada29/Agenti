@@ -22,16 +22,16 @@ public class RestEndPoints {
 	}
 	
 	@GET
-	@Path("/register/{username}/{firstname}/{lastname}/{password}/{address}/{allias}")
+	@Path("/register/{username}/{password}/{firstname}/{lastname}/{address}/{alias}")
 	public String register(
 			@PathParam("username") String username,
 			@PathParam("password") String password,
 			@PathParam("firstname") String firstname,
 			@PathParam("lastname") String lastname,
 			@PathParam("address") String address,
-			@PathParam("allias") String allias	
+			@PathParam("alias") String alias	
 			) {
 		System.out.println("RestEndPoint : Register");
-		return uf.register(username, firstname, lastname, password, address, allias);
+		return uf.register(username, firstname, lastname, password, address, alias);
 	}
 }

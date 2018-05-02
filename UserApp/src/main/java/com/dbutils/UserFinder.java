@@ -31,11 +31,11 @@ public class UserFinder implements UserFinderInterface{
 	@EJB
 	MongoClientProvider mcp;
 
-	private HashMap<String, User> activeUsers;
+	private ArrayList<String> activeUsers;
 	
 	@PostConstruct
 	public void init() {
-		activeUsers = new HashMap<String, User>();
+		activeUsers = new ArrayList<String>();
 	}
 	
 	@Override
@@ -133,11 +133,11 @@ public class UserFinder implements UserFinderInterface{
 				Gson g = new Gson();
 				
 				User user = g.fromJson(d.first().toJson(), User.class);
-				System.out.println("a ovde");
-				activeUsers.put(username, user);
-				System.out.println("a sad");
-				//TODO Notify ChattApp about new logged in user via JMS
+				activeUsers.add(username);
+				//TODO 1 Notify ChattApp about new logged in user via JMS
 				
+				
+			
 				System.out.println("json: " + new Gson().toJson(user));
 				return new Gson().toJson(user);
 			}

@@ -10,6 +10,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import com.model.Host;
+import com.xmlconfig.XMLParser;
 
 @Singleton
 @Startup
@@ -23,6 +24,9 @@ public class JaxRSActivator {
     	hostname = ip.getHostName();
     	System.out.println("IP: " + ip);
     	System.out.println("ADDRESS: " + ip.toString().split("/")[1] +", HOSTNAME: "+hostname);
+   
+    	
+    	
     }
     
     public static Host getHost(){
