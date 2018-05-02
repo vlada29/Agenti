@@ -2,8 +2,11 @@ package com.dbutils;
 
 import java.util.ArrayList;
 
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -34,14 +37,14 @@ import com.xmlconfig.XMLParser;
 public class Login implements LoginInterface{
 	//@EJB
 	//JMSInterface jmsi;
-	
-	private ArrayList<String> activeUsers;
+
+	//private ArrayList<String> activeUsers;
 	
 	@SuppressWarnings("unused")
 	@Override
 	public String login(String username, String password) throws JMSException, NamingException {
 		String ret = null;
-		if(!JaxRSActivator.getHost().getAlias().equals("Master")){
+		if(!StartUpBean.getHost().getAlias().equals("Master")){
 			System.out.println("Non master.");
 			
 			ResteasyClient client = new ResteasyClientBuilder().build();
@@ -49,13 +52,17 @@ public class Login implements LoginInterface{
 	        Response response = target.request().get();
 	        ret = response.readEntity(String.class);
 	        System.out.println("Login as: " + ret);
-    
+	        
+	        //temporary
+	        //activeUsers.add((new Gson().fromJson(ret, User.class)).getUsername());
+	        //
+	        
+	        //System.out.println("Active users:");
+			//for(String s : activeUsers)
+			//	System.out.println(s+", ");
 		} else {
 			System.out.println("Master.");
 			//TODO JMS instead REST
-			//System.out.println("JMS search");
-			//JMSTopic tt = new JMSTopic();
-			//String ret = tt.login(username, password, new Host("",""));
 			
 			ResteasyClient client = new ResteasyClientBuilder().build();
 	        ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/restendpoints/login/"+username+"/"+password);
@@ -65,8 +72,11 @@ public class Login implements LoginInterface{
 	        ///////////////////////////////////////////////////////
 			
 	        //azuriraj
-			activeUsers.add((new Gson().fromJson(ret, User.class)).getUsername());
-	        
+	        //activeUsers.add((new Gson().fromJson(ret, User.class)).getUsername());
+			//System.out.println("Active users:");
+			//for(String s : activeUsers)
+				//System.out.println(s+", ");
+			
 			System.out.println("Notify ChatApp nodes:");
         	XMLParser parser = new XMLParser();
         	for(Host h : parser.getAllHosts()){

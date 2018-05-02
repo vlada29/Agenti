@@ -24,6 +24,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="jboss-client.jar"/>
-	<classpathentry kind="lib" path="/siebog/lib/compile/resteasy-client-3.0.8.Final.jar"/>
+	<classpathentry kind="lib" path="lib/resteasy-client-3.0.9.Final.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

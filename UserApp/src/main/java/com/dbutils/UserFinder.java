@@ -7,9 +7,13 @@ import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.core.Response;
 
 import org.bson.Document;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.google.gson.Gson;
 import com.interfaces.UserFinderInterface;
@@ -136,7 +140,12 @@ public class UserFinder implements UserFinderInterface{
 				activeUsers.add(username);
 				//TODO 1 Notify ChattApp about new logged in user via JMS
 				
-				
+				//rest temp
+				ResteasyClient client = new ResteasyClientBuilder().build();
+		        ResteasyWebTarget target = client.target("http://localhost:8080/websocket-example/jaxrs/ChatAppRestEndPoint/updateActiveUsers/"+username);
+		        Response response = target.request().get();
+		        String ret = response.readEntity(String.class);
+		        /////////////
 			
 				System.out.println("json: " + new Gson().toJson(user));
 				return new Gson().toJson(user);

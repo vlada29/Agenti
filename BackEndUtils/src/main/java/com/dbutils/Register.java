@@ -15,12 +15,12 @@ public class Register implements RegisterInterface {
 	@Override
 	public String register(String username, String password, String firstname, String lastname) {
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		System.out.println(JaxRSActivator.getHost().getAddress()+"/"
-        		+JaxRSActivator.getHost().getAlias());
+		System.out.println(StartUpBean.getHost().getAddress()+"/"
+        		+StartUpBean.getHost().getAlias());
         ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/restendpoints/register/"
         		+username+"/"+password+"/"+firstname+"/"+lastname+"/"+
-        		JaxRSActivator.getHost().getAddress()+"/"
-        		+JaxRSActivator.getHost().getAlias()
+        		StartUpBean.getHost().getAddress()+"/"
+        		+StartUpBean.getHost().getAlias()
         		);
         Response response = target.request().get();
         String ret = response.readEntity(String.class);
