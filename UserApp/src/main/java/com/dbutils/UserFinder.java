@@ -17,6 +17,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.google.gson.Gson;
 import com.interfaces.UserFinderInterface;
+import com.model.Grupa;
 import com.model.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -108,12 +109,40 @@ public class UserFinder implements UserFinderInterface{
 
 	@Override
 	public String getGroups(String user) {
-		
-		
-		
-		
-		
-		return "OK";
+		try {
+			MongoClient mongoClient = mcp.getMongoClient();
+			MongoDatabase db = mongoClient.getDatabase("test");		
+			MongoCollection<Document> groups = db.getCollection("groups");
+			
+			FindIterable<Document> d = groups.find();
+			
+			Gson g = new Gson();
+			
+			String ret = "[";
+			
+			boolean prvi = true;
+			
+			for(Document doc : d) {
+				Grupa grupa = g.fromJson(doc.toJson(), Grupa.class);
+				
+				if(grupa.getClanovi().contains(user)) {
+					if(prvi) {
+						prvi = false;
+					}else {
+						ret+=",";
+					}
+					ret+=doc.toJson();
+				}
+				
+			}
+			
+			ret+="]";
+			
+			return ret;
+			
+		} catch(Exception e) {
+			return "ERROR";
+		}
 	}
 
 	@Override

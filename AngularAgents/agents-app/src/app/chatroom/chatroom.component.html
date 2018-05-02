@@ -6,32 +6,24 @@
       <div class="panel-heading">Start new conversation</div>
       <div class="panel-body">
         <div class="newConvUsers">
-          <div class="checkbox">
-            <label><input type="checkbox" value="">Jon</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" value="">Steve</label>
-          </div>
-          <div class="checkbox disabled">
-            <label><input type="checkbox" value="">Suzan</label>
-          </div>
+          <div class="checkbox" id="prijatelji" *ngFor="let f of user.friends">
+            <label><input type="checkbox" value="" id="f">{{f}}</label>
+          </div>          
         </div>
         <hr>
         <div class="form-group">
           <label for="usr">Group name:</label>
-          <input type="text" class="form-control" id="usr">
+          <input type="text" class="form-control" id="usr" #groupName>
         </div>
         <hr>
-        <button type="button" class="btn btn-primary" (click)="sendMsg()">OK</button>
+        <button type="button" class="btn btn-primary" (click)="createGroup(groupName.value)">OK</button>
       </div>  
     </div>
     <div class="panel panel-primary">
         <div class="panel-heading">Conversations</div>
         <div class="panel-body">
-          <div class="list-group">
-            <a class="list-group-item" (click)="openChat($event)">Jon</a>
-            <a class="list-group-item">Steve</a>
-            <a class="list-group-item">Suzan</a>
+          <div class="list-group" *ngFor="let g of groups">
+            <a class="list-group-item" (click)="openChat($event)">{{g.ime}}</a>
           </div>
         </div>  
       </div>

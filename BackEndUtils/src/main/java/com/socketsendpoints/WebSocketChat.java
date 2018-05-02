@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -17,27 +19,40 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.interfaces.MessageSaverInterface;
+
 @Singleton
-@ServerEndpoint("/example1/{key}")
+@ServerEndpoint("/chat/{user}")
 public class WebSocketChat {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketChat.class);
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
 
+    @EJB
+    MessageSaverInterface ms;
+    
     @OnMessage
-    public void onMessage(Session session, String message, @PathParam("key") String key) {
-        LOGGER.info("Message received from session ID: {}, message: {}, key: {}", session.getId(), message, key);
-        sessions.get(key).parallelStream().forEach(session2 -> {
-            if (session == session2) {
-                return;
-            }
-            session2.getAsyncRemote().sendText(message);
-        });
+    public void onMessage(Session session, String message, @PathParam("user") String key) {
+        
+    	System.out.println("poruka: "+message);
+    	
+    	
+    	
+    	
+    	ms.saveMessage(message);
+    	
+    	
+//        sessions.get(key).parallelStream().forEach(session2 -> {
+//            if (session == session2) {
+//                return;
+//            }
+//            session2.getAsyncRemote().sendText(message);
+//        });
     }
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("key") String key) {
-        LOGGER.info("Session opened ID: {} key: {}", session.getId(), key);
+    public void onOpen(Session session, @PathParam("user") String key) {
+        System.out.println(" sesija i kljuc: "+session.getId()+ key);
         if (!sessions.containsKey(key)) {
             sessions.put(key, new ArrayList<>());
         }
@@ -45,13 +60,13 @@ public class WebSocketChat {
     }
 
     @OnClose
-    public void onClose(Session session, @PathParam("key") String key) {
+    public void onClose(Session session, @PathParam("user") String key) {
         LOGGER.info("Session closed ID: {}, key: {}", session.getId(), key);
         sessions.get(key).remove(session);
     }
 
     @OnError
-    public void onError(Session session, @PathParam("key") String key, Throwable throwable) {
+    public void onError(Session session, @PathParam("user") String key, Throwable throwable) {
         LOGGER.error("Session error. Removing session: {}", Arrays.toString(new Object[]{session.getId(), key}), throwable);
         sessions.get(key).remove(session);
         try {
