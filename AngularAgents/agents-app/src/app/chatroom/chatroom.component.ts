@@ -12,6 +12,8 @@ export class ChatroomComponent implements OnInit {
 	public groups = null;
 	public invited_friends_ids = [];
 	
+	private otvorenaGrupa;
+	
 	private ws;
 	private w3;
 	constructor(private user_service: UserServiceService) { }
@@ -23,42 +25,36 @@ export class ChatroomComponent implements OnInit {
 		this.w3.onmessage = (event) => {console.log(event.data); this.groups = JSON.parse(event.data)}; 
 		
 		this.ws = new WebSocket('ws://localhost:8080/websocket-example/chat/'+this.user.username);
+		this.ws.onopen = () => {};
+		this.ws.onmessage = function(event) {
+			document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + event.data.from.username +':' + event.data.content + '</div>';
+		}
 		
 	}
-	//
-//
-//	checkWebSocket(){
-//
-//
-//		this.ws.onopen = function() {
-//		}
-//
-//		this.ws.onmessage = function(event) {
-//			let currentChat = "Jon";
-//			document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + currentChat +': ' + event.data + '</div>';
-//		}
-//
-//	}
 
-
-  appendMessage(type, text) {
-      document.getElementById('messagesDiv').innerHTML += '<div class="' + type + '">' + text + '</div>';
-  }
-
-
-  sendMessageToKey() {
-             let messageToKey = (<HTMLInputElement>document.getElementById('messageToKey')).value;
-             //this.ws.send(messageToKey);
-             this.appendMessage('message', 'you > ' + 'K1' + ': "' + messageToKey + '"');
-  }
+	
 
 
 
   sendMsg(event,text){
 	    if(event.keyCode == 13) {
 	    	console.log(text);
-	    	//this.ws.send(text);
-	    	this.appendMessage('message','You:' + text);
+	    	
+	    	var m = {
+	    			from: this.user,
+	    			to: this.otvorenaGrupa.clanovi,
+	    			date: new Date(),
+	    			subject: "chat",
+	    			content: text
+	    	}
+	    	
+	    	
+	    	
+	    	this.ws.send(JSON.stringify(m));
+	    	
+	    	
+	    	document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + this.user.username +':' + text + '</div>';
+	    	
 	    }
   }
 
@@ -66,6 +62,7 @@ export class ChatroomComponent implements OnInit {
 	  console.log('otvoren');
 	  console.log(event.srcElement.firstChild.data);
 	  var grupa = this.groups.find(function (obj) { return obj.ime === event.srcElement.firstChild.data; });
+	  this.otvorenaGrupa = grupa;
 	  console.log('grupa');
 	  console.log(grupa);
 	  

@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -17,6 +19,8 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.interfaces.MessageSaverInterface;
+
 @Singleton
 @ServerEndpoint("/chat/{user}")
 public class WebSocketChat {
@@ -24,15 +28,26 @@ public class WebSocketChat {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketChat.class);
     private final Map<String, List<Session>> sessions = new ConcurrentHashMap<>();
 
+    @EJB
+    MessageSaverInterface ms;
+    
     @OnMessage
     public void onMessage(Session session, String message, @PathParam("user") String key) {
-        LOGGER.info("Message received from session ID: {}, message: {}, key: {}", session.getId(), message, key);
-        sessions.get(key).parallelStream().forEach(session2 -> {
-            if (session == session2) {
-                return;
-            }
-            session2.getAsyncRemote().sendText(message);
-        });
+        
+    	System.out.println("poruka: "+message);
+    	
+    	
+    	
+    	
+    	ms.saveMessage(message);
+    	
+    	
+//        sessions.get(key).parallelStream().forEach(session2 -> {
+//            if (session == session2) {
+//                return;
+//            }
+//            session2.getAsyncRemote().sendText(message);
+//        });
     }
 
     @OnOpen

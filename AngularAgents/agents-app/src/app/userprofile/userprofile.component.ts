@@ -55,12 +55,4 @@ export class UserprofileComponent implements OnInit {
 	}
 
 
-	namesti(data){
-		this.rezultatPretrage = data;
-	}
-
-
-
-
-
 }
