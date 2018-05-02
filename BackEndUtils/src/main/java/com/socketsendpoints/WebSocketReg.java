@@ -43,7 +43,7 @@ private Session session;
 			@PathParam("password") String password,
 			@PathParam("firstname") String firstname,
 			@PathParam("lastname") String lastname) throws JsonGenerationException, JsonMappingException, IOException{
-		System.out.println("WSendpoint Login");
+		System.out.println("WSendpoint Register");
 		String userStr = ri.register(username, firstname, lastname, password);
 		
 		if(userStr!=null){

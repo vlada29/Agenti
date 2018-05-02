@@ -21,11 +21,14 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.interfaces.LoginInterface;
 import com.jms.JMSInterface;
+import com.jms.JMSProducer;
+import com.jms.JMSTopic;
+import com.jms.TestTopic;
 import com.model.Host;
 @Stateless
 public class Login implements LoginInterface{
-	@EJB
-	JMSInterface jmsi;
+	//@EJB
+	//JMSInterface jmsi;
 	
 	@SuppressWarnings("unused")
 	@Override
@@ -43,13 +46,16 @@ public class Login implements LoginInterface{
 	        	return null;
 	        }
 		} else {
-			String ret = jmsi.login(username, password, new Host("",""));
+			JMSTopic tt = new JMSTopic();
+			//String ret = tt.login(username, password, new Host("",""));
+			
 			System.out.println("JMS search");
-			if(ret!=null) {
-	        	return ret;
-	        }else {
-	        	return null;
-	        }
+			return null;
+//			if(ret!=null) {
+//	        	return ret;
+//	        }else {
+//	        	return null;
+//	        }
 			
 		}
 	}

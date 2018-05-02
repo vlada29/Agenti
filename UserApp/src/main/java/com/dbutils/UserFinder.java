@@ -2,7 +2,9 @@ package com.dbutils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -29,6 +31,13 @@ public class UserFinder implements UserFinderInterface{
 	@EJB
 	MongoClientProvider mcp;
 
+	private HashMap<String, User> activeUsers;
+	
+	@PostConstruct
+	public void init() {
+		activeUsers = new HashMap<String, User>();
+	}
+	
 	@Override
 	public String searchForUser(String searchBy, String value) {
 		
@@ -120,8 +129,17 @@ public class UserFinder implements UserFinderInterface{
 				System.out.println("No such user!");
 				return null;
 			} else {
-				System.out.println("Found user");
-				return d.first().toJson();
+				System.out.println("Found user: ");
+				Gson g = new Gson();
+				
+				User user = g.fromJson(d.first().toJson(), User.class);
+				System.out.println("a ovde");
+				activeUsers.put(username, user);
+				System.out.println("a sad");
+				//TODO Notify ChattApp about new logged in user via JMS
+				
+				System.out.println("json: " + new Gson().toJson(user));
+				return new Gson().toJson(user);
 			}
 
 		} catch (Exception e) {
@@ -130,7 +148,7 @@ public class UserFinder implements UserFinderInterface{
 	}
 
 	@Override
-	public String register(String username, String firstname, String lastname, String password) {
+	public String register(String username, String firstname, String lastname, String password, String address, String alias) {
 		System.out.println("UserFinder Register: " + username +", "+password);
 		try {
 			MongoClient mongoClient = mcp.getMongoClient();
@@ -149,6 +167,8 @@ public class UserFinder implements UserFinderInterface{
 				document.append("password", password);
 				document.append("firstname", firstname);
 				document.append("lastname", lastname);
+				document.append("host", new Document().append("address", address).append("alias", alias));
+				System.out.println("New user: " + document.toString());
 				users.insertOne(document);
 				return "OK";
 			} else {
@@ -159,6 +179,29 @@ public class UserFinder implements UserFinderInterface{
 			return null;
 		}
 	}
+
+	@Override
+	public String logout(String username) {
+		System.out.println("Logout... " + username);
+		try {
+			MongoClient mongoClient = mcp.getMongoClient();
+			MongoDatabase db = mongoClient.getDatabase("test");		
+			MongoCollection<Document> users = db.getCollection("users");
+			FindIterable<Document> d = users.find(eq("username",username));
+			
+			if(d.first() != null) {
+				activeUsers.remove(username);
+				return "OK";
+			} else {
+				return null;
+			}
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	
 	
 	
 }

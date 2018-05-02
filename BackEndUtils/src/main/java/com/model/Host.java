@@ -30,4 +30,8 @@ public class Host implements Serializable {
     public void setAlias(String alias) {
         this.alias = alias;
     }
+    
+    public String toString(){
+    	return "Address: " + address +", Alias: " + alias;
+    }
 }
