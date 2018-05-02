@@ -23,7 +23,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/A1/Desktop/Agentske tehnologije/course_files_export/3-EJB/Primeri/TestResteasyClient/TestResteasyClient/lib/resteasy-client-3.0.9.Final.jar"/>
 	<classpathentry kind="lib" path="jboss-client.jar"/>
+	<classpathentry kind="lib" path="/siebog/lib/compile/resteasy-client-3.0.8.Final.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

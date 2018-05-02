@@ -55,6 +55,10 @@ export class UserServiceService {
     console.log('User logged in: ', this.user.username);
   }
 
+  sendMessageForRefresh(){
+	  this.ws.send('alohaaa');
+  }
+  
   register(username, firstname, lastname, password) {
       this.ws = new WebSocket('ws://localhost:8080/websocket-example/register/'+username+'/'+password+'/'+firstname+'/'+lastname);
       this.ws.onopen = () => this.ws.send('');

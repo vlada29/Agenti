@@ -3,9 +3,9 @@
     <div class="panel panel-primary">
       <div class="panel-heading">User details</div>
       <div class="panel-body">
-        Username: k <br>
-        Firstname: k <br>
-        Lastname: k <br>
+        Username: {{user.username}} <br>
+        Firstname: {{user.firstname}} <br>
+        Lastname: {{user.lastname}} <br>
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@
       <div class="panel-heading">Friends</div>
       <div class="panel-body">
           <ul class="list-group">
-            <li class="list-group-item">ok</li>
+            <li class="list-group-item" *ngFor="let f of user.friends">{{f}}</li>
           </ul>
       </div>
     </div>
@@ -52,10 +52,10 @@
       <div class="panel-body">
           <div *ngFor="let g of groups">
             <div class="panel panel-info">
-              <div class="panel-heading">{{g.name}}</div>
+              <div class="panel-heading">{{g.ime}}</div>
               <div class="panel-body">
-                <div *ngFor="let u of g.users">
-                  {{g.username}}
+                <div *ngFor="let u of g.clanovi">
+                  {{u}}<br>
                 </div>
               </div>
             </div>

@@ -88,7 +88,7 @@ public class UserFinder implements UserFinderInterface{
 			
 			User f = g.fromJson(d.first().toJson(), User.class);
 			
-			u.getFriends().add(f);
+			u.getFriends().add(f.getUsername());
 			
 			Document doc = Document.parse(g.toJson(u));
 			

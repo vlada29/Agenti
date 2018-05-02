@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '../IUser';
+import { UserServiceService } from '../user-service.service';
 
 @Component({
   selector: 'app-userprofile',
@@ -16,22 +17,25 @@ export class UserprofileComponent implements OnInit {
 	private ws;
 	private ws2;
 	private w3;
-	constructor() {
+	constructor(private user_service: UserServiceService) {
 
 	}
 
 	ngOnInit() {
-		this.w3 = new WebSocket('ws://localhost:8080/websocket-example/findGroups/Vlada');
+		
+		this.user = this.user_service.getUser();
+		
+		this.w3 = new WebSocket('ws://localhost:8080/websocket-example/findGroups/'+this.user.username);
 		this.w3.onopen = () => this.w3.send('ok');
-		this.w3.onmessage = (event) => {console.log(event.data);}
+		this.w3.onmessage = (event) => {console.log(event.data); this.groups = JSON.parse(event.data)}
 	}
 
 	addFriend(){
 		console.log(this.rezultatPretrage);
 
-		this.ws2 = new WebSocket('ws://localhost:8080/websocket-example/addFriend/'+this.rezultatPretrage.username+'/'+this.rezultatPretrage.username);
+		this.ws2 = new WebSocket('ws://localhost:8080/websocket-example/addFriend/'+this.user.username+'/'+this.rezultatPretrage.username);
 		this.ws2.onopen = () => this.ws2.send('ok');
-		this.ws2.onmessage = (event) => {console.log(event.data);}
+		this.ws2.onmessage = (event) => {this.user_service.sendMessageForRefresh();this.user = this.user_service.getUser();}
 
 	}
 

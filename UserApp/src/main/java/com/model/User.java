@@ -9,14 +9,14 @@ public class User implements Serializable {
     private String firstname;
     private String lastname;
     private Host host;
-    private ArrayList<User> friends;
+    private ArrayList<String> friends;
 
     public User() {}
 
     
 
     public User(String username, String password, String firstname, String lastname, Host host,
-			ArrayList<User> friends) {
+			ArrayList<String> friends) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -52,13 +52,13 @@ public class User implements Serializable {
 
 
 
-	public ArrayList<User> getFriends() {
+	public ArrayList<String> getFriends() {
 		return friends;
 	}
 
 
 
-	public void setFriends(ArrayList<User> friends) {
+	public void setFriends(ArrayList<String> friends) {
 		this.friends = friends;
 	}
 
