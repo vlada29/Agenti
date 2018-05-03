@@ -14,6 +14,7 @@ export class ChatroomComponent implements OnInit {
 	public added_to_group = [];
     public friends_array_obj : any;
 	private otvorenaGrupa;
+    private activeChat;
 
 	private primljenaPoruka;
 
@@ -35,14 +36,14 @@ export class ChatroomComponent implements OnInit {
 		this.ws.onmessage = (event) => {
 			this.primljenaPoruka = JSON.parse(event.data);
 			if(this.primljenaPoruka.subject === this.otvorenaGrupa.ime) {
-				document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + event.data.from.username +':' + event.data.content + '</div>';
+				document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + this.primljenaPoruka.from.username +':' + this.primljenaPoruka.content + '</div>';
 			}
 
 			//Dodavanje poruke u odgovarajucu grupu
 			for (var g in this.groups) {
 				var obj = this.groups[g];
 				if(obj.ime === this.primljenaPoruka.subject) {
-					obj.poruke.append(this.primljenaPoruka);
+					obj.poruke.push(this.primljenaPoruka);
 				}
 			}
 
@@ -100,8 +101,13 @@ export class ChatroomComponent implements OnInit {
 		    document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + obj.from.username +':' + obj.content + '</div>';
 
 		}
-
-
+        if(document.getElementById(this.activeChat)!=null){
+            document.getElementById(this.activeChat).classList.remove('btn', 'btn-success');
+            document.getElementById(this.activeChat).classList.add('btn', 'btn-warning');
+        }
+        this.activeChat = event.target.id;
+        document.getElementById(event.target.id).classList.remove('btn', 'btn-warning');
+        document.getElementById(event.target.id).classList.add('btn', 'btn-success');
   }
 
 
@@ -193,12 +199,13 @@ export class ChatroomComponent implements OnInit {
 
   private leaveGroupWS;
   leaveGroup(event){
-      console.log('IDJE: ', event.target.id)
       this.leaveGroupWS =  new WebSocket('ws://localhost:8080/websocket-example/leaveGroup/'+event.target.name+'/'+event.target.id);
       this.leaveGroupWS.onopen = () => this.leaveGroupWS.send('ok');
       this.leaveGroupWS.onmessage = (event) => {
           this.getGroups();
       };
   }
+
+
 
 }

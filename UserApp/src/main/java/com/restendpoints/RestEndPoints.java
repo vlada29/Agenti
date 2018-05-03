@@ -29,6 +29,14 @@ public class RestEndPoints {
 		return uf.login(username, password);
 	}
 	
+
+	@GET
+	@Path("/logout/{username}")
+	public String login(@PathParam("username") String username) {
+		System.out.println("RestEndPoint : Logout");
+		return uf.logout(username);
+	}
+	
 	@GET
 	@Path("/register/{username}/{password}/{firstname}/{lastname}/{address}/{alias}")
 	public String register(

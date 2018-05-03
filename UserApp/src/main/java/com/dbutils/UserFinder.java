@@ -165,10 +165,6 @@ public class UserFinder implements UserFinderInterface{
 				return null;
 			} else {
 				System.out.println("Found user: ");
-				Gson g = new Gson();
-				
-				//User user = g.fromJson(d.first().toJson(), User.class);
-				//activeUsers.add(username);
 				//TODO 1 Notify ChattApp about new logged in user via JMS
 				
 				//rest temp
@@ -222,18 +218,11 @@ public class UserFinder implements UserFinderInterface{
 	public String logout(String username) {
 		System.out.println("Logout... " + username);
 		try {
-			MongoClient mongoClient = mcp.getMongoClient();
-			MongoDatabase db = mongoClient.getDatabase("test");		
-			MongoCollection<Document> users = db.getCollection("users");
-			FindIterable<Document> d = users.find(eq("username",username));
-			
-			if(d.first() != null) {
-				activeUsers.remove(username);
-				return "OK";
-			} else {
-				return null;
-			}
-
+			ResteasyClient client = new ResteasyClientBuilder().build();
+	        ResteasyWebTarget target = client.target("http://localhost:8080/websocket-example/jaxrs/ChatAppRestEndPoint/removeActiveUsers/"+username);
+	        Response response = target.request().get();
+	        String ret = response.readEntity(String.class);
+	        return "OK";
 		} catch (Exception e) {
 			return null;
 		}

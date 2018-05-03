@@ -14,10 +14,20 @@ export class LogoutComponent implements OnInit {
       private router:Router,
       private http: HttpClient,
       private _userService: UserServiceService) { }
-
+private WSlogout;
   ngOnInit() {
       this._userService.logout();
-     this.router.navigate(['login']);
+
+
+      this.WSlogout =  new WebSocket('ws://localhost:8080/websocket-example/logout/'+this._userService.getUsername());
+       this.WSlogout.onopen = () =>  this.WSlogout.send('ok');
+       this.WSlogout.onmessage = (event) => {
+
+      };
+
+      this.router.navigate(['login']);
+
+
   }
 
 }

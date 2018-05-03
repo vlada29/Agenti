@@ -19,9 +19,22 @@ public class ChatAppRestEndPoint {
 	public void updateActiveUsers(@PathParam("username") String username) {
 		JaxRSActivator.activeUsers.add(username);
 		
-		System.out.println("Dodavanje novog aktivnog u chat appu.");		
+		System.out.println("Aktivni: ");		
 		
 		for(String u : JaxRSActivator.activeUsers)
 			System.out.println(u+", ");
 	}
+	
+	@GET
+	@Path("/removeActiveUsers/{username}")
+	public void removeActiveUsers(@PathParam("username") String username) {
+		JaxRSActivator.activeUsers.remove(username);
+		
+		System.out.println("Aktivni: ");		
+		
+		for(String u : JaxRSActivator.activeUsers)
+			System.out.println(u+", ");
+	}
+	
+	
 }

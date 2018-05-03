@@ -25,7 +25,7 @@
         <div class="panel-body">
           <div class="list-group" *ngFor="let g of groups">
 
-            <a class="list-group-item" (click)="openChat($event)">{{g.ime}}</a>
+            <button class="btn btn-warning" id="{{g.id}}ActiveGroup" (click)="openChat($event)">{{g.ime}}</button>
             <div *ngIf="g.osnivac == user.username; then canDelete"></div>
             <ng-template #canDelete>
                 <button type="button" name={{g.id}} class="btn btn-primary" (click)="deleteGroup($event)">Delete</button>
