@@ -52,14 +52,28 @@ public class WebSocketChat {
     	
 
     	ArrayList<User> activeUsers = JaxRSActivator.activeUsers;
+    	User us = null;
+    	for(User s : activeUsers) {
+    		if(s.getUsername().equals(key)) {
+    			us = s;
+    		}
+    	}
+    	
     	
     	for(User s : activeUsers) {
 
     		for(String to : m.getTo()) {
     			//ako je korisnik koji prima poruku aktivan i nije onaj koji je salje, treba mu poslati poruku
     			if(s.getUsername().equals(to) && !s.getUsername().equals(key)) {
-    				Session sess = sessions.get(to).get(0);
-    				sess.getAsyncRemote().sendText(message);
+    				if(s.getHost().getAddress().equals(us.getHost().getAddress())) {
+    					Session sess = sessions.get(to).get(0);
+        				sess.getAsyncRemote().sendText(message);
+    				}else {
+    			    	ResteasyClient client = new ResteasyClientBuilder().build();
+    			        ResteasyWebTarget target = client.target("http://"+s.getHost().getAddress()+"/websocket-example/jaxrs/forwardMessage/send/"+s.getUsername());
+    			        Response response = target.request().post(Entity.entity(message, "application/json"));
+    				}
+    				
     			}
     		}
     	}

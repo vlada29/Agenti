@@ -42,7 +42,10 @@ public class XMLParser {
                Element eElement = (Element) nNode;
                String alias =  eElement.getElementsByTagName("alias").item(0).getTextContent().trim();
                String address = eElement.getElementsByTagName("ip").item(0).getTextContent().trim()+ ":" + eElement.getElementsByTagName("port").item(0).getTextContent().trim();
-               hosts.add(new Host(address,alias));
+               if(!alias.equals("Master")) {
+            	   hosts.add(new Host(address,alias));
+               }
+               
             }
          }
 		return hosts;

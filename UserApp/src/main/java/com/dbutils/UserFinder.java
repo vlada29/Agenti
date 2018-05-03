@@ -175,7 +175,7 @@ public class UserFinder implements UserFinderInterface{
 				
 				//rest temp
 				
-				
+				/*
 				User ulogovan = g.fromJson(d.first().toJson(), User.class);
 				
 				URL whatismyip = new URL("http://checkip.amazonaws.com");
@@ -197,7 +197,10 @@ public class UserFinder implements UserFinderInterface{
 				ResteasyClient client = new ResteasyClientBuilder().build();
 		        ResteasyWebTarget target = client.target("http://localhost:8080/websocket-example/jaxrs/ChatAppRestEndPoint/updateActiveUsers");
 		        Response response = target.request().post(Entity.entity(ulogovan, "application/json"));
-		        String ret = response.readEntity(String.class);
+		        
+		        
+		        */
+		        
 		        /////////////
 			
 				System.out.println("json: " +d.first().toJson());
