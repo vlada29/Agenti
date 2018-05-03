@@ -16,10 +16,19 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
+
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.app.JaxRSActivator;
+import com.google.gson.Gson;
 import com.interfaces.MessageSaverInterface;
+import com.model.Message;
 
 @Singleton
 @ServerEndpoint("/chat/{user}")
@@ -33,21 +42,36 @@ public class WebSocketChat {
     
     @OnMessage
     public void onMessage(Session session, String message, @PathParam("user") String key) {
-        
-    	System.out.println("poruka: "+message);
-    	
-    	
-    	
-    	
+    	//Cuvanje poruke u bazu
     	ms.saveMessage(message);
     	
+    	Gson g = new Gson();
     	
-//        sessions.get(key).parallelStream().forEach(session2 -> {
-//            if (session == session2) {
-//                return;
-//            }
-//            session2.getAsyncRemote().sendText(message);
-//        });
+    	Message m = g.fromJson(message, Message.class);
+    	
+    	ArrayList<String> activeUsers = JaxRSActivator.activeUsers;
+    	
+    	for(String s : activeUsers) {
+    		for(String to : m.getTo()) {
+    			//ako je korisnik koji prima poruku aktivan i nije onaj koji je salje, treba mu poslati poruku
+    			if(s.equals(to) && !s.equals(key)) {
+    				Session sess = sessions.get(to).get(0);
+    				sess.getAsyncRemote().sendText(message);
+    			}
+    		}
+    	}
+    	
+    	
+    	/*
+    	ako nisu na istom hostu treba sledeci rest poziv sa odgovarajucom IP adresom
+    	
+    	
+    	ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target = client.target("http://localhost:8080/websocket-example/jaxrs/forwardMessage/send/"+"IMEKORISNIKA");
+        Response response = target.request().post(Entity.entity(message, "application/json"));
+        
+    	*/
+
     }
 
     @OnOpen

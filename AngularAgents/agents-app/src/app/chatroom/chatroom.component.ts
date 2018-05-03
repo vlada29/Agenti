@@ -13,6 +13,7 @@ export class ChatroomComponent implements OnInit {
 	public invited_friends_ids = [];
 	
 	private otvorenaGrupa;
+	private primljenaPoruka;
 	
 	private ws;
 	private w3;
@@ -26,10 +27,21 @@ export class ChatroomComponent implements OnInit {
 		
 		this.ws = new WebSocket('ws://localhost:8080/websocket-example/chat/'+this.user.username);
 		this.ws.onopen = () => {};
-		this.ws.onmessage = function(event) {
-			document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + event.data.from.username +':' + event.data.content + '</div>';
+		this.ws.onmessage = (event) => {
+			this.primljenaPoruka = JSON.parse(event.data);
+			if(this.primljenaPoruka.subject === this.otvorenaGrupa.ime) {
+				document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + event.data.from.username +':' + event.data.content + '</div>';
+			}
+
+			//Dodavanje poruke u odgovarajucu grupu
+			for (var g in this.groups) {
+				var obj = this.groups[g];
+				if(obj.ime === this.primljenaPoruka.subject) {
+					obj.poruke.append(this.primljenaPoruka);
+				}
+			}
+			
 		}
-		
 	}
 
 	
@@ -44,7 +56,7 @@ export class ChatroomComponent implements OnInit {
 	    			from: this.user,
 	    			to: this.otvorenaGrupa.clanovi,
 	    			date: new Date(),
-	    			subject: "chat",
+	    			subject: this.otvorenaGrupa.ime,
 	    			content: text
 	    	}
 	    	

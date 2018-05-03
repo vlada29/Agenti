@@ -3,10 +3,8 @@ package com.restendpoints;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 
 import com.interfaces.MessageSaverInterface;
 import com.model.Message;
