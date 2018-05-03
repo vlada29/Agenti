@@ -30,6 +30,8 @@ public class JMSConsumer implements MessageListener {
  			try {
  				String text = tm.getText();
  				System.out.println("Received new message : " + text);
+ 				
+ 				
  			} catch (JMSException e) {
  				e.printStackTrace();
  			}

@@ -1,12 +1,15 @@
 package com.restendpoints;
 
-import javax.ejb.EJB;
+
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+
 
 import com.app.JaxRSActivator;
+import com.model.User;
 
 
 
@@ -14,26 +17,28 @@ import com.app.JaxRSActivator;
 @RequestScoped
 public class ChatAppRestEndPoint {
 
-	@GET
-	@Path("/updateActiveUsers/{username}")
-	public void updateActiveUsers(@PathParam("username") String username) {
-		JaxRSActivator.activeUsers.add(username);
+	@POST
+	@Consumes("application/json")
+	@Path("/updateActiveUsers")
+	public void updateActiveUsers(User u) {
+		JaxRSActivator.activeUsers.add(u);
 		
 		System.out.println("Aktivni: ");		
 		
-		for(String u : JaxRSActivator.activeUsers)
-			System.out.println(u+", ");
+		for(User user : JaxRSActivator.activeUsers)
+			System.out.println(user.getUsername()+", ");
 	}
 	
-	@GET
-	@Path("/removeActiveUsers/{username}")
-	public void removeActiveUsers(@PathParam("username") String username) {
-		JaxRSActivator.activeUsers.remove(username);
+	@POST
+	@Consumes("application/json")
+	@Path("/removeActiveUsers")
+	public void removeActiveUsers(User u) {
+		JaxRSActivator.activeUsers.remove(u);
 		
 		System.out.println("Aktivni: ");		
 		
-		for(String u : JaxRSActivator.activeUsers)
-			System.out.println(u+", ");
+		for(User user : JaxRSActivator.activeUsers)
+			System.out.println(user.getUsername()+", ");
 	}
 	
 	
