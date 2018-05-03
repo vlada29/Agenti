@@ -13,7 +13,7 @@ import { SocketsServiceService } from './sockets-service.service';
 import { HeaderComponent } from './header/header.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard} from './auth.guard';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { AuthGuard} from './auth.guard';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [RestServiceService, UserServiceService, SocketsServiceService, AuthGuard],
   bootstrap: [AppComponent]

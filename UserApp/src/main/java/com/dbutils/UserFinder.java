@@ -18,6 +18,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import com.google.gson.Gson;
 import com.interfaces.UserFinderInterface;
 import com.model.Grupa;
+import com.model.Host;
 import com.model.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -76,28 +77,29 @@ public class UserFinder implements UserFinderInterface{
 			MongoCollection<Document> users = db.getCollection("users");
 			
 			FindIterable<Document> d = users.find(eq("username",user));
-			
 			if(d.first() == null) {
+				System.out.println("1 NULL JE");
 				throw new Exception();
 			}
-			
 			Gson g = new Gson();
 			
 			User u = g.fromJson(d.first().toJson(), User.class);
 
 			d = users.find(eq("username",friend));
-			
+
 			if(d.first() == null) {
 				throw new Exception();
 			}
-			
+
 			User f = g.fromJson(d.first().toJson(), User.class);
-			
+
 			u.getFriends().add(f.getUsername());
-			
+	
 			Document doc = Document.parse(g.toJson(u));
-			
+
 			users.findOneAndReplace(eq("username",user), doc);
+			
+		
 			
 			return "OK";
 			
@@ -124,7 +126,7 @@ public class UserFinder implements UserFinderInterface{
 			
 			for(Document doc : d) {
 				Grupa grupa = g.fromJson(doc.toJson(), Grupa.class);
-				
+				System.out.println("Grupa: " + grupa.getIme()+", Osnivac: "+grupa.getOsnivac());
 				if(grupa.getClanovi().contains(user)) {
 					if(prvi) {
 						prvi = false;
@@ -152,7 +154,7 @@ public class UserFinder implements UserFinderInterface{
 			MongoClient mongoClient = mcp.getMongoClient();
 			MongoDatabase db = mongoClient.getDatabase("test");		
 			MongoCollection<Document> users = db.getCollection("users");
-	
+			System.out.println("pera: " + users.find(eq("username","pera")).first());
 			AggregateIterable<Document> d = users.aggregate(
 					Arrays.asList(
 					Aggregates.match(Filters.eq("username", username)),
@@ -165,8 +167,8 @@ public class UserFinder implements UserFinderInterface{
 				System.out.println("Found user: ");
 				Gson g = new Gson();
 				
-				User user = g.fromJson(d.first().toJson(), User.class);
-				activeUsers.add(username);
+				//User user = g.fromJson(d.first().toJson(), User.class);
+				//activeUsers.add(username);
 				//TODO 1 Notify ChattApp about new logged in user via JMS
 				
 				//rest temp
@@ -176,8 +178,8 @@ public class UserFinder implements UserFinderInterface{
 		        String ret = response.readEntity(String.class);
 		        /////////////
 			
-				System.out.println("json: " + new Gson().toJson(user));
-				return new Gson().toJson(user);
+				System.out.println("json: " +d.first().toJson());
+				return d.first().toJson();
 			}
 
 		} catch (Exception e) {
@@ -200,14 +202,12 @@ public class UserFinder implements UserFinderInterface{
 			System.out.println("Trying");
 			if(d.first() == null) {
 				System.out.println("Username available!");
-				Document document = new Document();
-				document.append("username", username);
-				document.append("password", password);
-				document.append("firstname", firstname);
-				document.append("lastname", lastname);
-				document.append("host", new Document().append("address", address).append("alias", alias));
-				System.out.println("New user: " + document.toString());
-				users.insertOne(document);
+				
+				User noviUser = new User(username, password, firstname, lastname, new Host(address, alias), new ArrayList<String>());
+				Gson g = new Gson();
+				Document doc = Document.parse(g.toJson(noviUser));
+				System.out.println("New user: " + doc.toString());
+				users.insertOne(doc);
 				return "OK";
 			} else {
 				return null;

@@ -6,9 +6,10 @@
       <div class="panel-heading">Start new conversation</div>
       <div class="panel-body">
         <div class="newConvUsers">
-          <div class="checkbox" id="prijatelji" *ngFor="let f of user.friends">
-            <label><input type="checkbox" value="" id="f">{{f}}</label>
-          </div>          
+          <div  id="prijatelji" *ngFor="let f of friends_array_obj">
+            <input [(ngModel)]="f.checked_to_group" (ngModelChange)="changed_added_to_group()" type="checkbox" />
+            <label>{{f.username}}</label>
+          </div>
         </div>
         <hr>
         <div class="form-group">
@@ -17,15 +18,46 @@
         </div>
         <hr>
         <button type="button" class="btn btn-primary" (click)="createGroup(groupName.value)">OK</button>
-      </div>  
+      </div>
     </div>
     <div class="panel panel-primary">
         <div class="panel-heading">Conversations</div>
         <div class="panel-body">
           <div class="list-group" *ngFor="let g of groups">
+
             <a class="list-group-item" (click)="openChat($event)">{{g.ime}}</a>
+            <div *ngIf="g.osnivac == user.username; then canDelete"></div>
+            <ng-template #canDelete>
+                <button type="button" name={{g.id}} class="btn btn-primary" (click)="deleteGroup($event)">Delete</button>
+                <button type="button" class="btn btn-primary" data-toggle="collapse"  [attr.data-target]="'#' + g.id + 'Add'"id="addUser">Add</button>
+
+                    <div class="panel panel-primary collapse" id="{{g.id}}Add">
+                         <div class="list-group" *ngFor="let f of user.friends">
+                             <div *ngIf="g.clanovi.indexOf(f) == -1">
+                                {{f}}<button type="button" name={{g.id}} id={{f}} class="btn btn-success" (click)="addNewToGroup($event)">Add</button>
+                                <hr>
+                            </div>
+                         </div>
+
+                    </div>
+
+                    <button type="button" class="btn btn-primary" data-toggle="collapse"  [attr.data-target]="'#' + g.id + 'Remove'" id="removeUser">Remove</button>
+                        <div class="panel panel-primary collapse" id="{{g.id}}Remove">
+                             <div class="list-group" *ngFor="let f of g.clanovi">
+
+                                    {{f}}<button type="button" name={{g.id}} id={{f}} class="btn btn-danger" (click)="removeFromGroup($event)">Remove</button>
+                                    <hr>
+
+                             </div>
+
+                        </div>
+
+
+            </ng-template>
+            <button type="button" name={{g.id}} id={{user.username}} class="btn btn-primary" (click)="leaveGroup($event)">Leave</button>
+            <hr>
           </div>
-        </div>  
+        </div>
       </div>
   </div>
   <div class="col-sm-8">
@@ -39,7 +71,7 @@
         <div class="form-group" (keypress)="sendMsg($event,chatbubble.value)">
           <input class="form-control input-lg" type="text" #chatbubble>
         </div>
-      </div>  
+      </div>
     </div>
-  </div> 
+  </div>
 </div>

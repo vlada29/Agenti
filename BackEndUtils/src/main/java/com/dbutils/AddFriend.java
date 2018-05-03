@@ -14,7 +14,7 @@ public class AddFriend implements AddFriendInterface {
 
 	@Override
 	public boolean addFriend(String user, String friend) {
-
+		System.out.println(user+" - "+friend);
 		ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/addFriend/add/"+user+"/"+friend);
         Response response = target.request().get();
