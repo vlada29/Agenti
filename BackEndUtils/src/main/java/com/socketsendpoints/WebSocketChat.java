@@ -29,6 +29,7 @@ import com.app.JaxRSActivator;
 import com.google.gson.Gson;
 import com.interfaces.MessageSaverInterface;
 import com.model.Message;
+import com.model.User;
 
 @Singleton
 @ServerEndpoint("/chat/{user}")
@@ -49,12 +50,12 @@ public class WebSocketChat {
     	
     	Message m = g.fromJson(message, Message.class);
     	
-    	ArrayList<String> activeUsers = JaxRSActivator.activeUsers;
+    	ArrayList<User> activeUsers = JaxRSActivator.activeUsers;
     	
-    	for(String s : activeUsers) {
+    	for(User s : activeUsers) {
     		for(String to : m.getTo()) {
     			//ako je korisnik koji prima poruku aktivan i nije onaj koji je salje, treba mu poslati poruku
-    			if(s.equals(to) && !s.equals(key)) {
+    			if(s.getUsername().equals(to) && !s.getUsername().equals(key)) {
     				Session sess = sessions.get(to).get(0);
     				sess.getAsyncRemote().sendText(message);
     			}

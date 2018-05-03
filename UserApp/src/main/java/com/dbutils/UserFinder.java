@@ -1,5 +1,9 @@
 package com.dbutils;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,6 +11,7 @@ import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 
 import org.bson.Document;
@@ -150,6 +155,7 @@ public class UserFinder implements UserFinderInterface{
 	@Override
 	public String login(String username, String password) {
 		System.out.println("UserFinder Login: " + username +", "+password);
+		Gson g = new Gson();
 		try {
 			MongoClient mongoClient = mcp.getMongoClient();
 			MongoDatabase db = mongoClient.getDatabase("test");		
@@ -168,9 +174,29 @@ public class UserFinder implements UserFinderInterface{
 				//TODO 1 Notify ChattApp about new logged in user via JMS
 				
 				//rest temp
+				
+				
+				User ulogovan = g.fromJson(d.first().toJson(), User.class);
+				
+				URL whatismyip = new URL("http://checkip.amazonaws.com");
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+				                whatismyip.openStream()));
+
+				String ip = in.readLine(); //you get the IP as a String
+				
+		    	
+		    	System.out.println("IP ajde: " + ip);
+		    	
+				
+				Host h = new Host(ip+":8080","nekiAlijas");
+				
+				
+				ulogovan.setHost(h);
+				
+				
 				ResteasyClient client = new ResteasyClientBuilder().build();
-		        ResteasyWebTarget target = client.target("http://localhost:8080/websocket-example/jaxrs/ChatAppRestEndPoint/updateActiveUsers/"+username);
-		        Response response = target.request().get();
+		        ResteasyWebTarget target = client.target("http://localhost:8080/websocket-example/jaxrs/ChatAppRestEndPoint/updateActiveUsers");
+		        Response response = target.request().post(Entity.entity(ulogovan, "application/json"));
 		        String ret = response.readEntity(String.class);
 		        /////////////
 			

@@ -1,4 +1,5 @@
 package com.jms;
+import javax.ejb.EJB;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -18,39 +19,45 @@ import javax.naming.InitialContext;
  * @author minja
  *
  */
-public class JMSTopic implements MessageListener {
+
+
+public class JMSTopic  {
+	
+	
 	public JMSTopic() {
 		try {
-			Context context = new InitialContext();
-			ConnectionFactory cf = (ConnectionFactory) context
-					.lookup("jms/RemoteConnectionFactory");
-			final Topic topic = (Topic) context
-					.lookup("jms/topic/mojTopic");
+			Context context = CtxFactory.get();
+			ConnectionFactory cf = (ConnectionFactory) context.lookup("jms/RemoteConnectionFactory"); //TODO razlika
+			final Topic topic = (Topic) context.lookup("jms/topic/mojTopic");
 			context.close();
 			Connection connection = cf.createConnection();//"guest", "guestguest");
-			final Session session = connection.createSession(false,
-					Session.AUTO_ACKNOWLEDGE);
+			final Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
 
+
+
+
+			
+			
+			
+			
+//			MessageConsumer consumer = session.createConsumer(topic);
+//			
+//			MessageListener ml = new JMSConsumer();
+//			
+//			consumer.setMessageListener(ml);
+//			
+//			
 			connection.start();
-
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			MessageConsumer consumer = session.createConsumer(topic);
-			consumer.setMessageListener(this);
 			
 			
 			
 			// create and publish a message
 			TextMessage msg = session.createTextMessage();
-			msg.setText("Text!!!");
+			msg.setText("username,User1");
+			
+			
+			
 			MessageProducer producer = session.createProducer(topic);
 			producer.send(msg);
 			
@@ -58,12 +65,11 @@ public class JMSTopic implements MessageListener {
 			
 			
 			Thread.sleep(1000);
-			System.out
-					.println("Message published. Please check application server's console to see the response from MDB.");
+			System.out.println("Message published. Please check application server's console to see the response from MDB.");
 			
-			producer.close();
-			consumer.close();
-			connection.stop();
+//			producer.close();
+//			consumer.close();
+//			connection.stop();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -73,16 +79,16 @@ public class JMSTopic implements MessageListener {
 		new JMSTopic();
 	}
 
-	public void onMessage(Message msg) {
-		System.out.println("Received a message.");
-		if (msg instanceof TextMessage) {
-			TextMessage tm = (TextMessage) msg;
-			try {
-				String text = tm.getText();
-				System.out.println("Received new message : " + text);
-			} catch (JMSException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+//	public void onMessage(Message msg) {
+//		System.out.println("Received a message.");
+//		if (msg instanceof TextMessage) {
+//			TextMessage tm = (TextMessage) msg;
+//			try {
+//				String text = tm.getText();
+//				System.out.println("Received new message : " + text);
+//			} catch (JMSException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 }

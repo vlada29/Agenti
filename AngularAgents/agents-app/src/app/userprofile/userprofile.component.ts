@@ -50,8 +50,6 @@ export class UserprofileComponent implements OnInit {
 	    this.ws.onopen = () => this.ws.send('alohaaa');
 	    this.ws.onmessage = (event) => {this.pronadjen = true; this.rezultatPretrage = JSON.parse(event.data);}
 
-
-
 	}
 
 
