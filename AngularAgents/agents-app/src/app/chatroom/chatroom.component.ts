@@ -13,7 +13,7 @@ export class ChatroomComponent implements OnInit {
 	public invited_friends_ids = [];
 	public added_to_group = [];
     public friends_array_obj : any;
-	private otvorenaGrupa;
+	private otvorenaGrupa = null;
     private activeChat;
 
 	private primljenaPoruka;
@@ -31,23 +31,7 @@ export class ChatroomComponent implements OnInit {
 		this.w3.onopen = () => this.w3.send('ok');
 		this.w3.onmessage = (event) => {console.log(event.data); this.groups = JSON.parse(event.data)};
 
-		this.ws = new WebSocket('ws://localhost:8080/websocket-example/chat/'+this.user.username);
-		this.ws.onopen = () => {};
-		this.ws.onmessage = (event) => {
-			this.primljenaPoruka = JSON.parse(event.data);
-			if(this.primljenaPoruka.subject === this.otvorenaGrupa.ime) {
-				document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + this.primljenaPoruka.from.username +':' + this.primljenaPoruka.content + '</div>';
-			}
 
-			//Dodavanje poruke u odgovarajucu grupu
-			for (var g in this.groups) {
-				var obj = this.groups[g];
-				if(obj.ime === this.primljenaPoruka.subject) {
-					obj.poruke.push(this.primljenaPoruka);
-				}
-			}
-
-		}
 
 
         this.friends_array_obj = [];
@@ -56,17 +40,12 @@ export class ChatroomComponent implements OnInit {
       })
 
 	}
-
-
-
-
-
   sendMsg(event,text){
 	    if(event.keyCode == 13) {
 	    	console.log(text);
 
 	    	var m = {
-	    			from: this.user,
+	    			from: this.user.username,
 	    			to: this.otvorenaGrupa.clanovi,
 	    			date: new Date(),
 	    			subject: this.otvorenaGrupa.ime,
@@ -82,7 +61,7 @@ export class ChatroomComponent implements OnInit {
 
 	    }
   }
-
+  private primljene = [];
   openChat(event){
 	  console.log('otvoren');
 	  console.log(event.srcElement.firstChild.data);
@@ -98,7 +77,7 @@ export class ChatroomComponent implements OnInit {
 
 	  for (var poruka in grupa.poruke) {
 		    var obj = grupa.poruke[poruka];
-		    document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + obj.from.username +':' + obj.content + '</div>';
+		    document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + obj.from +':' + obj.content + '</div>';
 
 		}
         if(document.getElementById(this.activeChat)!=null){
@@ -108,6 +87,31 @@ export class ChatroomComponent implements OnInit {
         this.activeChat = event.target.id;
         document.getElementById(event.target.id).classList.remove('btn', 'btn-warning');
         document.getElementById(event.target.id).classList.add('btn', 'btn-success');
+
+
+
+
+        this.ws = new WebSocket('ws://localhost:8080/websocket-example/chat/'+this.user.username);
+		this.ws.onopen = () => {};
+		this.ws.onmessage = (event) => {
+			this.primljenaPoruka = JSON.parse(event.data);
+            console.log(this.primljenaPoruka);
+                if(this.primljene.indexOf(this.primljenaPoruka.content) == -1){
+			         if(this.primljenaPoruka.subject === this.otvorenaGrupa.ime) {
+				            document.getElementById('messagesDiv').innerHTML += '<div class="' + 'message' + '">' + this.primljenaPoruka.from +':' + this.primljenaPoruka.content + '</div>';
+			         }
+                }
+                this.primljene.push(this.primljenaPoruka.content);
+			//Dodavanje poruke u odgovarajucu grupu
+			for (var g in this.groups) {
+				var obj = this.groups[g];
+				if(obj.ime === this.primljenaPoruka.subject) {
+					obj.poruke.push(this.primljenaPoruka);
+				}
+			}
+
+		}
+
   }
 
 

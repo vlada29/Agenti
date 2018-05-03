@@ -53,16 +53,9 @@ public class Login implements LoginInterface{
 	        ret = response.readEntity(String.class);
 	        System.out.println("Login as: " + ret);
 	        
-	        //temporary
-	        //activeUsers.add((new Gson().fromJson(ret, User.class)).getUsername());
-	        //
-	        
-	        //System.out.println("Active users:");
-			//for(String s : activeUsers)
-			//	System.out.println(s+", ");
+	    
 		} else {
 			System.out.println("Master.");
-			//TODO JMS instead REST
 			
 			ResteasyClient client = new ResteasyClientBuilder().build();
 	        ResteasyWebTarget target = client.target("http://localhost:8080/user-app/jaxrs/restendpoints/login/"+username+"/"+password);
@@ -70,12 +63,6 @@ public class Login implements LoginInterface{
 	        ret = response.readEntity(String.class);
 	        System.out.println("Login as: " + ret);
 	        ///////////////////////////////////////////////////////
-			
-	        //azuriraj
-	        //activeUsers.add((new Gson().fromJson(ret, User.class)).getUsername());
-			//System.out.println("Active users:");
-			//for(String s : activeUsers)
-				//System.out.println(s+", ");
 			
 			System.out.println("Notify ChatApp nodes:");
         	XMLParser parser = new XMLParser();
@@ -93,7 +80,7 @@ public class Login implements LoginInterface{
 			
 		}
 		
-		//vracanje na websocket i azuriranje angulara
+
         return ret;
 	}
 

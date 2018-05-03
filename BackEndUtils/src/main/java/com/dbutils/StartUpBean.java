@@ -43,8 +43,8 @@ public class StartUpBean {
 		
 		MongoCollection<Document> users = db.getCollection("users");
 		MongoCollection<Document> groups = db.getCollection("groups");
-		//users.deleteMany(new Document());
-		//groups.deleteMany(new Document());
+		users.deleteMany(new Document());
+		groups.deleteMany(new Document());
 
     }
     

@@ -29,6 +29,7 @@ public class MessageSaver implements MessageSaverInterface {
 	@Override
 	public boolean saveMessage(String message) {
 		System.out.println("jesi ovde sve ti jebem");
+		System.out.println(message);
 		ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target("http://localhost:8080/websocket-example/jaxrs/saveMessage/post");
         Response response = target.request().post(Entity.entity(message, "application/json"));

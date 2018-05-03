@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class Message implements Serializable {
-    private User from;
+    private String from;
     private ArrayList<String> to;
     private String date;
     private String subject;
@@ -13,7 +13,7 @@ public class Message implements Serializable {
 
     public Message() {}
 
-    public Message(User from, ArrayList<String> to, String date, String subject, String content) {
+    public Message(String from, ArrayList<String> to, String date, String subject, String content) {
         this.from = from;
         this.to = to;
         this.date = date;
@@ -21,11 +21,11 @@ public class Message implements Serializable {
         this.content = content;
     }
 
-    public User getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public void setFrom(User from) {
+    public void setFrom(String from) {
         this.from = from;
     }
 

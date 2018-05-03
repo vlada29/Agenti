@@ -50,7 +50,7 @@ public class WebSocketChat {
     	Message m = g.fromJson(message, Message.class);
     	
     	ArrayList<String> activeUsers = JaxRSActivator.activeUsers;
-    	
+    	System.out.println("poruka je: " + message);
     	for(String s : activeUsers) {
     		for(String to : m.getTo()) {
     			//ako je korisnik koji prima poruku aktivan i nije onaj koji je salje, treba mu poslati poruku

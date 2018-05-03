@@ -10,8 +10,11 @@ public class User implements Serializable {
     private String lastname;
     private Host host;
     private ArrayList<String> friends;
+    
 
-    public User() {}
+
+
+	public User() {}
 
     
 
