@@ -36,7 +36,7 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	@GET
 	public AgentskiCentar getNode() {
 		System.out.println("OK");
-		return null;
+		return "Master odgovorio OK!";
 	}
 	
 	@POST
