@@ -6,9 +6,6 @@
 
 <servlet-name>TestServlet</servlet-name>
 
-<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
-
-</servlet-class>
 
 <!-- 
 

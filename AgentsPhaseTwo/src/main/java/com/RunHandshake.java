@@ -8,7 +8,9 @@ import java.net.URL;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
+import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ws.rs.client.Entity;
@@ -27,27 +29,43 @@ import com.model.AgentskiCentar;
 
 @Startup
 @Singleton
+//@LocalBean
 public class RunHandshake {
-	@EJB
-	INodeUtils centerUtils;
+//	@EJB
+//	INodeUtils centerUtils;
 	
 	@PostConstruct
-	public void tryHandshake() throws IOException {
-		System.out.println(getIp());
+	public void tryHandshake() {
+		try {
+			System.out.println(getIp());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		tryRegister();
 	}
 	
-	public void tryRegister() throws IOException{
+	public void tryRegister(){
+		 
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
+		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
+		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/PhaseTwo/rest/node");
 		AgentskiCentar ac = new AgentskiCentar();
-		ac.setAddress(getIp());
+		try {
+			ac.setAddress(getIp());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(ac, MediaType.APPLICATION_JSON));
-		List<AgentskiCentar> centres = response.readEntity(new GenericType<List<AgentskiCentar>>(){});
+		//List<AgentskiCentar> centres = response.readEntity(new GenericType<List<AgentskiCentar>>(){});
 		// TODO update all
 	}
-	
-	public String getIp() throws IOException{
+	@PreDestroy
+	public void preDestroy(){
+		 
+	}
+	public static String getIp() throws IOException{
 		URL whatismyip = new URL("http://checkip.amazonaws.com");
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 		                whatismyip.openStream()));

@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 import com.model.AgentskiCentar;
 
-@Startup
+//@Startup
 @Singleton
+//@DependsOn("StartupBean")
 public class NodeUtils implements INodeUtils{
 	private List<AgentskiCentar> agentCenters;
 	private String masterAlias;
