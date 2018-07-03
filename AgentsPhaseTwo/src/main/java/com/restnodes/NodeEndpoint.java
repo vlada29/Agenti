@@ -22,7 +22,6 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.db.INodeUtils;
-import com.db.MongoClientProvider;
 import com.model.AgentType;
 import com.model.AgentskiCentar;
 
@@ -30,17 +29,22 @@ import com.model.AgentskiCentar;
 @LocalBean
 @Path("/node")
 public class NodeEndpoint implements RemoteNodeEndpoint{
-	@EJB
-	MongoClientProvider mcp;
 	
 	@EJB
 	INodeUtils centerUtils;
 	
+	@GET
+	public AgentskiCentar getNode() {
+		return null;
+	}
+	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public void registerNode(AgentskiCentar newCenter) {
-		if(true){
-			centerUtils.addNode(newCenter);
+		System.out.println("New node register request, with address: " + newCenter.getAddress());
+		centerUtils.addNode(newCenter);
+		if(false){
+			
 			
 			ResteasyClient client = new ResteasyClientBuilder().build();
 			ResteasyWebTarget target = client.target("http://" + newCenter.getAddress() + ":8080/PhaseTwo/rest/agentskiCentar/agents/classes");		
@@ -78,9 +82,6 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 		}
 	}
 	
-	@GET
-	public AgentskiCentar getNode() {
-		return null;
-	}
+	
 
 }
