@@ -4,17 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
+import com.model.AID;
+import com.model.Agent;
+import com.model.AgentType;
 import com.model.AgentskiCentar;
 
-//@Startup
+@Startup
 @Singleton
 //@DependsOn("StartupBean")
 public class NodeUtils implements INodeUtils{
 	private List<AgentskiCentar> agentCenters;
+	private List<AgentType> supportedTypes;
+	
+	@Override
+	public List<AgentType> getSupportedTypes() {
+		return supportedTypes;
+	}
+	
+	public void setSupportedTypes(List<AgentType> supportedTypes) {
+		this.supportedTypes = supportedTypes;
+	}
 	private String masterAlias;
 	
 	@Override
@@ -40,6 +52,35 @@ public class NodeUtils implements INodeUtils{
 	@Override
 	public void initCenters() {
 		agentCenters = new ArrayList<AgentskiCentar>();
+		supportedTypes = new ArrayList<AgentType>();
+		AgentType at1 = new AgentType("module1","non_master_name1");
+		AgentType at2 = new AgentType("module2","non_master_name2");
+		AgentType at3 = new AgentType("module2","non_master_name3");
+		
+		Agent a1 = new Agent();
+		Agent a2 = new Agent();
+		
+		AgentskiCentar ac1 = new AgentskiCentar("non_master_1", "178.223.69.56");
+		
+		supportedTypes.add(at1);
+		supportedTypes.add(at2);
+		supportedTypes.add(at3);
+		
+		AID aid1 = new AID();
+		aid1.setHost(ac1);
+		aid1.setType(at1);
+		aid1.setName("AID_1");
+		
+
+		AID aid2 = new AID();
+		aid2.setHost(ac1);
+		aid2.setType(at2);
+		aid2.setName("AID_2");
+		
+		a1.setAid(aid1);
+		a2.setAid(aid2);
+		
+		agentCenters.add(ac1);
 	}
 
 	public List<AgentskiCentar> getAgentCenters() {

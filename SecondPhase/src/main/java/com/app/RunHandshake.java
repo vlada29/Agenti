@@ -30,15 +30,15 @@ import com.model.AgentskiCentar;
 @Singleton
 //@LocalBean
 public class RunHandshake {
-//	@EJB
-//	INodeUtils centerUtils;
+	@EJB
+	INodeUtils centerUtils;
 	
 	@PostConstruct
 	public void tryHandshake() {
 		System.out.println("Try to register on master");
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/PhaseTwo/rest/node");	
+		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/SecondPhase/rest/node");	
 		target.request().get();
 		
 		
@@ -55,7 +55,7 @@ public class RunHandshake {
 		System.out.println("Try to register on master");
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/PhaseTwo/rest/node");
+		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/SecondPhase/rest/node");	
 		AgentskiCentar ac = new AgentskiCentar();
 		try {
 			ac.setAddress(getIp());

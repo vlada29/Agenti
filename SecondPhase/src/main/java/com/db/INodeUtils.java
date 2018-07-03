@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.model.AgentType;
 import com.model.AgentskiCentar;
 
 @Local
@@ -14,5 +15,6 @@ public interface INodeUtils {
 	public List<AgentskiCentar> getCenters();
 	public AgentskiCentar getCentarByAlias(String alias);
 	public String getMasterAlias();
+	public List<AgentType> getSupportedTypes();
 	
 }
