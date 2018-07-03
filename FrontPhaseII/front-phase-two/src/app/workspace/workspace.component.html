@@ -1,0 +1,211 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1 style="text-align: center;">Agentsko okruzenje</h1>      
+  </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-3">
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#novi">Posalji novu poruku</button>
+      <hr>
+      <h3>Svi tipovi agenata</h3>
+      <ul class="nav nav-pills nav-stacked" *ngFor="let a of allAgentTypes">
+          <li><a data-toggle="pill" data-toggle="collapse" data-target="#demo" (click)="setSelektovanAgentTip(a)">{{a.id.type.module}}/{{a.id.type.name}}</a></li>
+      </ul>
+      <hr>
+      <h3>Pokrenuti agenti</h3>
+      <ul class="nav nav-pills nav-stacked" *ngFor="let a of allAgentTypes">
+          <li><a data-toggle="pill" data-toggle="collapse" data-target="#demo2" (click)="setSelektovanPokrenutAgent(a)">{{a.id.type.module}}/{{a.id.type.name}}</a></li>
+      </ul>  
+      </div>
+
+  <div class="col-sm-9">
+      <div id="demo" class="collapse">
+      <!-- Za tipove agenata -->
+      <div class="media">
+          <div class="media-left media-middle">
+            <img src="assets/agent.png" class="media-object" style="width:60px">
+          </div>
+          <div class="media-body">
+            <h3 class="media-heading"><b>Detalji o agentu</b></h3>
+            <p>
+              <b>Module:</b> {{selektovanAgentTip.id.type.module}}<br>
+              <b>Type name:</b> {{selektovanAgentTip.id.type.name}}<br>
+              <b>Enter agent name:</b> <input type="text" #imeAgenta>
+            </p>
+            <button class="btn btn-primary" (click)="pokreniAgenta(imeAgenta.value)">Pokreni</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Za pokrenute agente -->
+      <div id="demo2" class="collapse">
+
+          <div class="media">
+              <div class="media-left media-middle">
+                <img src="assets/agent.png" class="media-object" style="width:60px">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">Detalji o agentu</h4>
+                <p>
+                  <b>Module:</b> {{selektovanPokrenutAgent.id.type.module}}<br>
+                  <b>Type name:</b> {{selektovanPokrenutAgent.id.type.name}}<br>
+                  <b>Agent name:</b> {{selektovanPokrenutAgent.id.name}}
+                </p>
+                <button class="btn btn-primary" (click)="zaustaviAgenta()">Zaustavi</button>
+              </div>
+            </div>
+    
+          </div>
+          <hr>
+      <div class="panel panel-primary">
+          <div class="panel-heading">Log</div>
+          <div class="panel-body">
+            <div class="log" id="messagesDiv">
+
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="novi" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="text-align: center;">Send new message</h4>
+         </div>
+        <div class="modal-body">
+
+          
+            <form class="form-horizontal" >
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="content">Performative:</label>
+                <div class="col-sm-10">
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{performativeLabel}} &nbsp; <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a (click)="setPerformative('INFORM')">INFORM</a></li>
+                      <li><a (click)="setPerformative('REQUEST')">REQUEST</a></li>
+                      <li><a (click)="setPerformative('REFUSE')">REFUSE</a></li>
+                      <li><a (click)="setPerformative('PROPOSE')">PROPOSE</a></li>
+                      <li><a (click)="setPerformative('ACCEPT')">ACCEPT</a></li>
+                      <li><a (click)="setPerformative('REJECT')">REJECT</a></li>
+                      <li><a (click)="setPerformative('FAILED')">FAILED</a></li>
+                      <li><a (click)="setPerformative('DONE')">DONE</a></li>
+                      <li><a (click)="setPerformative('NEXT')">NEXT</a></li>
+                      <li><a (click)="setPerformative('OK')">OK</a></li>
+                      <li><a (click)="setPerformative('CONTRACTNET')">CONTRACTNET</a></li>
+                    </ul>
+                </div>
+              </div>
+              <hr>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="content">Sender:</label>
+                <div class="col-sm-10">
+                  <div *ngFor="let a of allRunningAgents">
+                    <label><input type="radio" name="bolradio" (click)="setSender(a)">{{a.id.name}}</label>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="content">Recievers:</label>
+                <div class="col-sm-10">
+                  <div *ngFor="let a of allRunningAgents">
+                    <label><input type="checkbox" value="" (click)="addReciever(a.id)">{{a.id.name}}</label>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="content">ReplyTo:</label>
+                <div class="col-sm-10">
+                  <div *ngFor="let a of allRunningAgents">
+                    <label><input type="radio" name="bolradio" (click)="setReplyTo(a)">{{a.id.name}}</label>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="content">Content:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="content" placeholder="Enter content" name="content" #content>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="language">Language:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="language" placeholder="Enter language" name="language" #language>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="encoding">Encoding:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="encoding" placeholder="Enter encoding" name="encoding" #encoding>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="ontology">Ontology:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="ontology" placeholder="Enter ontology" name="ontology" #ontology>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="protocol">Protocol:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="protocol" placeholder="Enter protocol" name="protocol" #protocol>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="conversationId">ConversationId:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="conversationId" placeholder="Enter conversationId" name="conversationId" #conversationId>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="replyWith">ReplyWith:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="replyWith" placeholder="Enter replyWith" name="replyWith" #replyWith>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="inReplyTo">InReplyTo:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="inReplyTo" placeholder="Enter inReplyTo" name="inReplyTo" #inReplyTo>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="replyBy">ReplyBy:</label>
+                <div class="col-sm-10">          
+                  <input type="text" class="form-control" id="replyBy" placeholder="Enter replyBy" name="replyBy" #replyBy>
+                </div>
+              </div>
+            </form>
+  
+  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="posaljiPoruku(content.value,language.value,encoding.value,ontology.value,protocol.value,conversationId.value,replyWith.value,inReplyTo.value,replyBy.value)">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
