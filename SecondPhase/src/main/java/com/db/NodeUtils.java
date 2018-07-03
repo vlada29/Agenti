@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
@@ -15,6 +17,7 @@ import com.model.AgentskiCentar;
 @Startup
 @Singleton
 //@DependsOn("StartupBean")
+@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class NodeUtils implements INodeUtils{
 	private List<AgentskiCentar> agentCenters;
 	private List<AgentType> supportedTypes;
