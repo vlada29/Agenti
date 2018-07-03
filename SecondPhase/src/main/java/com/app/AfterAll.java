@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import javax.ejb.Schedule;
+import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.ejb.Timer;
 import javax.ws.rs.client.Entity;
@@ -18,9 +19,9 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.model.AgentskiCentar;
 
-@Stateless
+//@Stateless
 public class AfterAll {
-    @Schedule(hour = "*", minute = "*", persistent = false)
+    //@Schedule(hour = "*", minute = "*", persistent = false)
     protected void init(Timer timer)
     {
      
