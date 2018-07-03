@@ -35,24 +35,37 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	
 	@GET
 	public AgentskiCentar getNode() {
+		System.out.println("OK");
 		return null;
 	}
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public void registerNode(AgentskiCentar newCenter) {
-		System.out.println("New node register request, with address: " + newCenter.getAddress());
+		System.out.println("Registracija novog cvora, with address: " + newCenter.getAddress());
 		centerUtils.addNode(newCenter);
-		if(false){
-			
-			
-			ResteasyClient client = new ResteasyClientBuilder().build();
-			ResteasyWebTarget target = client.target("http://" + newCenter.getAddress() + ":8080/PhaseTwo/rest/agentskiCentar/agents/classes");		
-			Response response = target.request(MediaType.APPLICATION_JSON).get();
-			//List<AgentType> agentTypes = (List<AgentType>)response.readEntity(new GenericType<List<AgentType>>(){});
-			
-			updateAllCenters(newCenter);
-		}
+		//GET /agents/classes
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		//ResteasyWebTarget target = client.target("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/classes");	
+		ResteasyWebTarget target = client.target("http://acd24056.ngrok.io/SecondPhase/rest/agents/test");		
+		Response response = target.request(MediaType.APPLICATION_JSON).get();
+		String ret = response.getEntity().toString();
+		System.out.println("ne master odgovorio");
+		
+		
+		//GET /agents/classes
+		//ResteasyClient client = new ResteasyClientBuilder().build();
+		//target = client.target("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/classes");		
+		target = client.target("http://acd24056.ngrok.io/SecondPhase/rest/agents/classes");
+		response = target.request(MediaType.APPLICATION_JSON).get();
+		ret = response.getEntity().toString();
+		
+		System.out.println("Klase: " + ret);
+		
+		
+		
+		//updateAllCenters(newCenter);
+		
 	}
 	
 	public void updateAllCenters(AgentskiCentar newCenter){
