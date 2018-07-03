@@ -3,16 +3,11 @@ package com.app;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.ejb.EJB;
-import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.Schedule;
+import javax.ejb.Stateless;
+import javax.ejb.Timer;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,20 +16,19 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
-import com.db.INodeUtils;
 import com.model.AgentskiCentar;
- 
- 
 
-@Startup
-@Singleton
-//@LocalBean
-public class RunHandshake {
-	@EJB
-	INodeUtils centerUtils;
-	
-	//@PostConstruct
-	public void tryHandshake() {
+@Stateless
+public class AfterAll {
+    @Schedule(hour = "*", minute = "*", persistent = false)
+    protected void init(Timer timer)
+    {
+     
+       tryHandshake();
+       timer.cancel();
+    }
+    
+    public void tryHandshake() {
 		System.out.println("Try to register on master");
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
@@ -69,10 +63,7 @@ public class RunHandshake {
 		//List<AgentskiCentar> centres = response.readEntity(new GenericType<List<AgentskiCentar>>(){});
 		// TODO update all
 	}
-	@PreDestroy
-	public void preDestroy(){
-		 
-	}
+	
 	public static String getIp() throws IOException{
 		URL whatismyip = new URL("http://checkip.amazonaws.com");
 		BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -87,4 +78,4 @@ public class RunHandshake {
     	
     	return ip;
 	}
-}
+ }
