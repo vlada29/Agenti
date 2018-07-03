@@ -36,6 +36,13 @@ public class RunHandshake {
 	
 	@PostConstruct
 	public void tryHandshake() {
+		System.out.println("Try to register on master");
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
+		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/PhaseTwo/rest/node");	
+		target.request().get();
+		
+		
 		try {
 			System.out.println(getIp());
 		} catch (IOException e) {
@@ -46,7 +53,7 @@ public class RunHandshake {
 	}
 	
 	public void tryRegister(){
-		 
+		System.out.println("Try to register on master");
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
 		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/PhaseTwo/rest/node");
