@@ -1,5 +1,6 @@
 package com.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.client.core.BaseClientResponse;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -56,14 +58,19 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 		
 		//GET /agents/classes
 		//ResteasyClient client = new ResteasyClientBuilder().build();
-		//target = client.target("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/classes");		
-		//target = client.target("http://acd24056.ngrok.io/SecondPhase/rest/agents/classes");
-		//response = target.request(MediaType.APPLICATION_JSON).get();
-		//ret = response.getEntity().toString();
-		
-		System.out.println("Klase: " + ret);
+		target = client.target("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/classes");		
+		target = client.target("http://acd24056.ngrok.io/SecondPhase/rest/agents/classes");
+		response = target.request().get();
+		 
 		
 		
+		
+	BaseClientResponse<?> r = (BaseClientResponse<?>) response;
+	System.out.println("AAA: " + r.getEntity(String.class));
+//		 
+//		System.out.println("Klase: " + r.getEntity(String.class));
+	//	List<AgentType> types = response.readEntity(new GenericType<List<AgentType>>() {});
+//		
 		
 		//updateAllCenters(newCenter);
 		
