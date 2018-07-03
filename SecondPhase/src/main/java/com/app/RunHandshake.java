@@ -59,10 +59,12 @@ public class RunHandshake {
 		AgentskiCentar ac = new AgentskiCentar();
 		try {
 			ac.setAddress(getIp());
+			ac.setAlias("NonMasterNode1");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(ac, MediaType.APPLICATION_JSON));
 		//List<AgentskiCentar> centres = response.readEntity(new GenericType<List<AgentskiCentar>>(){});
 		// TODO update all
