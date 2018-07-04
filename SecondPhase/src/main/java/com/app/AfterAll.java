@@ -20,7 +20,7 @@ import com.model.AgentskiCentar;
 
 @Stateless
 public class AfterAll {
-    @Schedule(hour = "*", minute = "*", persistent = false)
+  //  @Schedule(hour = "*", minute = "*", persistent = false)
     protected void init(Timer timer)
     {
      

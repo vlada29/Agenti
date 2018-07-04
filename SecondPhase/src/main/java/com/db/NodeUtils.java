@@ -19,8 +19,9 @@ import com.model.AgentskiCentar;
 //@DependsOn("StartupBean")
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class NodeUtils implements INodeUtils{
-	private List<AgentskiCentar> agentCenters;
-	private List<AgentType> supportedTypes;
+	private List<AgentskiCentar> agentCenters =  new ArrayList<AgentskiCentar>();
+	private List<AgentType> supportedTypes = new ArrayList<AgentType>();
+	 
 	
 	@Override
 	public List<AgentType> getSupportedTypes() {
@@ -51,7 +52,7 @@ public class NodeUtils implements INodeUtils{
 		return null;
 	}
 	
-	@PostConstruct
+	//@PostConstruct
 	@Override
 	public void initCenters() {
 		agentCenters = new ArrayList<AgentskiCentar>();
@@ -63,7 +64,7 @@ public class NodeUtils implements INodeUtils{
 		Agent a1 = new Agent();
 		Agent a2 = new Agent();
 		
-		AgentskiCentar ac1 = new AgentskiCentar("non_master_1", "178.223.69.56");
+		AgentskiCentar ac1 = new AgentskiCentar("178.223.69.56","non_master_1");
 		
 		supportedTypes.add(at1);
 		supportedTypes.add(at2);

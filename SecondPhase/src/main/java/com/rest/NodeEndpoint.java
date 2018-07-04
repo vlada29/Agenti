@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -31,6 +32,9 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.db.INodeUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.model.Agent;
 import com.model.AgentType;
 import com.model.AgentskiCentar;
 
@@ -44,6 +48,7 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	
 	@GET
 	public AgentskiCentar getNode() {
+		//GET /node
 		System.out.println("OK");
 		return null;
 	}
@@ -53,49 +58,79 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	public void registerNode(AgentskiCentar newCenter) {
 		System.out.println("Registracija novog cvora, with address: " + newCenter.getAddress());
 		centerUtils.addNode(newCenter);
-		//GET /agents/classes
-		//ResteasyClient client = new ResteasyClientBuilder().build();
-		//ResteasyWebTarget target = client.target("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/classes");	
-		//ResteasyWebTarget target = client.target("http://acd24056.ngrok.io/SecondPhase/rest/agents/test");		
-		//Response response = target.request(MediaType.APPLICATION_JSON).get();
-		//String ret = "";
-				 
-		//System.out.println("ne master odgovorio" + "");
 		
-		
-		//GET /agents/classes
-		//ResteasyClient client = new ResteasyClientBuilder().build();
-		//target = client.target("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/classes");		
-		//target = client.target("http://acd24056.ngrok.io/SecondPhase/rest/agents/classes");
+		//GET /agents/classes	 
 		String s = "";
 		try {
-			s = read("http://acd24056.ngrok.io/SecondPhase/rest/agents/test");
+			//s = read("http://7fbd0a86.ngrok.io/SecondPhase/rest/agents/test");
+			//s = read("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/test");
+			s = read("http://7fbd0a86.ngrok.io/SecondPhase/rest/agents/classes");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			 
 			e.printStackTrace();
 		}
-		//String s = target.request().get(Object.class).toString();
-		System.out.println("Ajde: " + s);
+		 
+		System.out.println("Dobavljeni tipovi sa non mastera: " + s);
+		Gson gson = new Gson();
+		Collection<Agent> agents  = gson.fromJson(s, new TypeToken<List<Agent>>(){}.getType());
 		
-		//BaseClientResponse<?> r = (BaseClientResponse<?>) response;
-		// System.out.println("Response Types: " + response.getEntity(String.class));
-		//System.out.println("Klase: " + r.getEntity(String.class));
-		//ArrayList<AgentType> types = (ArrayList<AgentType>) r.cge
+		for(Agent a : agents) {
+			System.out.println(a.getAid().toString());
+			centerUtils.getSupportedTypes().add(a.getAid().getType());
+		}
 		
 		
 		//updateAllCenters(newCenter);
 		
 	}
-	
+	//POST /node
 	public void updateAllCenters(AgentskiCentar newCenter){
 		for(AgentskiCentar ac : centerUtils.getCenters()){
-			if(!ac.getAlias().equals(centerUtils.getMasterAlias())){
+			ResteasyClient client = new ResteasyClientBuilder().build();
+			ResteasyWebTarget target = client.target("http://" + ac.getAddress() + ":8080/SecondPhase/rest/node");
+			Response response = target.request().post(Entity.entity(newCenter, MediaType.APPLICATION_JSON));	 
+		}
+	}
+	
+	//POST /agent/classes
+	public void updateWithNewTypes(Collection<Agent> agents){
+		if(agents.size()>0) { //azuriraj sve cvorose s novim tipovima
+			for(AgentskiCentar ac : centerUtils.getCenters()){
 				ResteasyClient client = new ResteasyClientBuilder().build();
-				ResteasyWebTarget target = client.target("http://" + ac.getAddress() + ":8080/PhaseTwo/rest/node");
-				Response response = target.request().post(Entity.entity(newCenter, MediaType.APPLICATION_JSON));
+				ResteasyWebTarget target = client.target("http://" + ac.getAddress() + ":8080/SecondPhase/rest/agent/classes");
+				Response response = target.request().post(Entity.entity(agents, MediaType.APPLICATION_JSON));	 
 			}
 		}
 	}
+	
+	//POST /node
+	public void updateWithNewCenters(Collection<AgentskiCentar> centers){
+		if(centers.size()>0) {
+			for(AgentskiCentar ac : centerUtils.getCenters()){
+				ResteasyClient client = new ResteasyClientBuilder().build();
+				ResteasyWebTarget target = client.target("http://" + ac.getAddress() + ":8080/SecondPhase/rest/node");
+				Response response = target.request().post(Entity.entity(centers, MediaType.APPLICATION_JSON));	 
+			}
+		}
+	}
+	
+	//POST /agents/classes
+	public void updateNewNodeWithTypes(Collection<AgentType> types, AgentskiCentar new_ac){
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://" + new_ac.getAddress() + ":8080/SecondPhase/agent/classes");
+		Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));	 
+		 
+	}
+	
+	//POST /agents/running
+	public void updateRunningAgents(Collection<AgentType> types, AgentskiCentar new_ac){
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://" + new_ac.getAddress() + ":8080/SecondPhase/agent/classes");
+		Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));	 
+		 
+	}
+	
+	
 	
 	public String read(String url) throws Exception {
 		
