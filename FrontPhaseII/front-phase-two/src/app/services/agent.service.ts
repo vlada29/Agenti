@@ -8,7 +8,7 @@ export class AgentService {
 
   constructor(private http: HttpClient) { }
 
-  public prefiks = "";
+  public prefiks = "/SecondPhase/rest";
 
   public getAgentsTypes(){
     var agents: IAgent[];
@@ -37,7 +37,7 @@ export class AgentService {
   }
 
   public posaljiPoruku(message): Observable<any>{
-    return this.http.post(this.prefiks+'/messages',message);
+    return this.http.post(this.prefiks+'/message/messages',message);
   }
   
 }

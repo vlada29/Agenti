@@ -21,6 +21,7 @@ import com.model.AgentskiCentar;
 public class NodeUtils implements INodeUtils{
 	private List<AgentskiCentar> agentCenters;
 	private List<AgentType> supportedTypes;
+	private List<Agent> runningAgents;
 	
 	@Override
 	public List<AgentType> getSupportedTypes() {
@@ -83,6 +84,8 @@ public class NodeUtils implements INodeUtils{
 		a1.setAid(aid1);
 		a2.setAid(aid2);
 		
+		runningAgents = new ArrayList<Agent>();
+		
 		agentCenters.add(ac1);
 	}
 
@@ -127,6 +130,33 @@ public class NodeUtils implements INodeUtils{
 	@Override
 	public List<AgentskiCentar> getCenters() {
 		return agentCenters;
+	}
+
+	@Override
+	public List<Agent> getRunning() {
+		return runningAgents;
+	}
+
+	@Override
+	public void pokreniAgenta(AgentType type, String name) {
+		Agent a = new Agent();
+		AID aid = new AID();
+		aid.setName(name);
+		aid.setType(type);
+		aid.setHost(localCenter);
+		a.setAid(aid);
+		runningAgents.add(a);
+	}
+
+	@Override
+	public void zaustaviAgenta(AID aid) {
+		for(Agent a : runningAgents) {
+			if(a.getAid().equals(aid)) {
+				runningAgents.remove(a);
+				break;
+			}
+		}
+		
 	}
  
 

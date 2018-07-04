@@ -27,10 +27,10 @@ export class WorkspaceComponent implements OnInit {
 
   ngOnInit() {
     this.allAgentTypes = this.agent_service.getAgentsTypes();
-    this.allRunningAgents = this.agent_service.getAgentsTypes();
+    
 
     //this.agent_service.getAgentTypes().subscribe(data => this.allAgentTypes = data);
-    //this.agent_service.getRunningAgents().subscribe(data => this.allRunningAgents = data);
+    this.agent_service.getRunningAgents().subscribe(data => this.allRunningAgents = data);
   }
 
   setSelektovanAgentTip(a){

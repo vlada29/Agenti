@@ -52,7 +52,7 @@ public class RunHandshake {
 			System.out.println("Try to register on master");
 			ResteasyClient client = new ResteasyClientBuilder().build();
 			//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-			ResteasyWebTarget target = client.target("http://32f380b5.ngrok.io/SecondPhase/rest/node");	
+			ResteasyWebTarget target = client.target("http://90a7ba91.ngrok.io/SecondPhase/rest/node");	
 			target.request().get();
 			
 			
@@ -72,7 +72,7 @@ public class RunHandshake {
 		System.out.println("Try to register on master");
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-		ResteasyWebTarget target = client.target("http://32f380b5.ngrok.io/SecondPhase/rest/node");	
+		ResteasyWebTarget target = client.target("http://90a7ba91.ngrok.io/SecondPhase/rest/node");	
 		AgentskiCentar ac = new AgentskiCentar();
 		try {
 			ac.setAddress(getIp());
