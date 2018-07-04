@@ -60,7 +60,7 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 		System.out.println("Registracija novog cvora, with address: " + newCenter.getAddress());
 		centerUtils.addNode(newCenter);
 		RunHandshake.centriips.add("79.175.95.73");
-		//RunHandshake.centriips.add(newCenter.getAddress());
+		//RunHandshake.centriips.add("79.175.95.73");
 		
 		//GET /agents/classes	 
 		String s = "";
@@ -162,21 +162,24 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 
 	}
 	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@DELETE
 	@Path("/{alias}")
 	public void removeNode(@PathParam("alias") String alias) {
 		System.out.println("Removing: "+alias);
-		if(centerUtils.removeNode(alias)) {
-			for(AgentskiCentar ac: centerUtils.getCenters()) {
-				if(!ac.getAlias().equals("master")) {
-					System.out.println("Removing on node: "+ac.getAlias());
-					ResteasyClient client = new ResteasyClientBuilder().build();
-					ResteasyWebTarget target = client.target(ac.getAddress()+":8080/PhaseTwo/rest/node/"+alias);
-					Response r = target.request().delete();
-					System.out.println(r.toString());
-				}
-			}	
-		}
+		centerUtils.removeNode(alias);
 	}
 	
 	
