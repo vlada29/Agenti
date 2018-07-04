@@ -22,12 +22,24 @@ export class WorkspaceComponent implements OnInit {
   private sender:IAgent;
   private replyTo:IAgent;
   private recievers:IAID[] = [];
+  
+  private primljenaPoruka;
+  private ws;
 
   constructor(private agent_service: AgentService) { }
 
   ngOnInit() {
     this.agent_service.getAgentTypes().subscribe(data => this.allAgentTypes = data);
     this.agent_service.getRunningAgents().subscribe(data => this.allRunningAgents = data);
+    this.ws = new WebSocket('ws://localhost:8080/SecondPhase/logger/vlada');
+    this.ws.onopen = () => this.ws.send('ok');
+    this.ws.onmessage = (event) => {
+		this.primljenaPoruka = event.data;
+        console.log(this.primljenaPoruka);
+
+		document.getElementById('messagesDiv').innerHTML += '<div>' + this.primljenaPoruka + '</div>';
+    
+    }
   }
 
   setSelektovanAgentTip(a){

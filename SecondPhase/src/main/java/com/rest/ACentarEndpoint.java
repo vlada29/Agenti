@@ -1,5 +1,6 @@
 package com.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -46,6 +47,9 @@ public class ACentarEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Agent> getRunning(){
 		System.out.println("Getting running agents");
+		List<Agent> ala = centerUtils.getRunning();
+		System.out.println("broj pokrenutih agenata: "+ala.size());
+		
 		return centerUtils.getRunning();
 	}
 	
