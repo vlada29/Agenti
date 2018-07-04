@@ -67,7 +67,7 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 		try {
 			//s = read("http://7fbd0a86.ngrok.io/SecondPhase/rest/agents/test");
 			//s = read("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/test");
-			s = read("http://6de06cf7.ngrok.io/SecondPhase/rest/agents/classes");
+			s = read(RunHandshake.non_master+"/SecondPhase/rest/agents/classes");
 		} catch (Exception e) {
 			 
 			e.printStackTrace();
@@ -128,7 +128,7 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	//POST /agents/running
 	public void updateRunningAgents(Collection<AgentType> types, AgentskiCentar new_ac){
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://" + new_ac.getAddress() + ":8080/SecondPhase/agent/classes");
+		ResteasyWebTarget target = client.target("http://" + new_ac.getAddress() + ":8080/SecondPhase/agent/running");
 		Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));	 
 		 
 	}
@@ -166,17 +166,9 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	@Path("/{alias}")
 	public void removeNode(@PathParam("alias") String alias) {
 		System.out.println("Removing: "+alias);
-		if(centerUtils.removeNode(alias)) {
-			for(AgentskiCentar ac: centerUtils.getCenters()) {
-				if(!ac.getAlias().equals("master")) {
-					System.out.println("Removing on node: "+ac.getAlias());
-					ResteasyClient client = new ResteasyClientBuilder().build();
-					ResteasyWebTarget target = client.target(ac.getAddress()+":8080/PhaseTwo/rest/node/"+alias);
-					Response r = target.request().delete();
-					System.out.println(r.toString());
-				}
-			}	
-		}
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target(RunHandshake.master+"/SecondPhase/rest/node/"+alias);
+		Response r = target.request().delete();
 	}
 	
 	
