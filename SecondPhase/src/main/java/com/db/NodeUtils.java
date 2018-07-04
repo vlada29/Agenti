@@ -63,7 +63,7 @@ public class NodeUtils implements INodeUtils{
 		return null;
 	}
 	
-	//@PostConstruct
+	@PostConstruct
 	@Override
 	public void initCenters() {
 		agentCenters = new ArrayList<AgentskiCentar>();

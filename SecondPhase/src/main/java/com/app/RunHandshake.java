@@ -38,9 +38,12 @@ import com.model.AgentskiCentar;
 @Singleton
 //@LocalBean
 public class RunHandshake {
+	
 	@EJB
 	INodeUtils centerUtils;
 	public static ArrayList<String> centriips = new ArrayList<String>(Arrays.asList("79.175.95.73"));
+	public static String master = "http://fd93c256.ngrok.io";
+	public static String non_master="http://6de06cf7.ngrok.io";
 	// @Schedule(hour = "*", minute = "*", persistent = false)
     protected void init(Timer timer)
     {
@@ -49,7 +52,7 @@ public class RunHandshake {
     }
 	
 	
-	//@PostConstruct
+	@PostConstruct
 	public void tryHandshake() {
 		Thread thread = new Thread() {
 	        @Override
@@ -57,7 +60,7 @@ public class RunHandshake {
 			System.out.println("Try to register on master");
 			ResteasyClient client = new ResteasyClientBuilder().build();
 			//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-			ResteasyWebTarget target = client.target("http://90a7ba91.ngrok.io/SecondPhase/rest/node");	
+			ResteasyWebTarget target = client.target(master+"/SecondPhase/rest/node");	
 			target.request().get();
 			
 			
@@ -77,7 +80,7 @@ public class RunHandshake {
 		System.out.println("Try to register on master");
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-		ResteasyWebTarget target = client.target("http://6de06cf7.ngrok.io/SecondPhase/rest/node");	
+		ResteasyWebTarget target = client.target(master+"/SecondPhase/rest/node");	
 		AgentskiCentar ac = new AgentskiCentar();
 		try {
 			ac.setAddress(getIp());
@@ -93,11 +96,12 @@ public class RunHandshake {
 	}
 	@PreDestroy
 	public void preDestroy() throws IllegalArgumentException, NullPointerException, IOException{
+		System.out.println("Pre destroy");
 		//u non master-u
-//		ResteasyClient client = new ResteasyClientBuilder().build();
-//		//master ip
-//		ResteasyWebTarget target = client.target("http://6de06cf7.ngrok.io/SecondPhase/rest/node/"+getIp());	
-//		target.request().delete();
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		//master ip
+		ResteasyWebTarget target = client.target(master+"/SecondPhase/rest/node/"+getIp());	
+		target.request().delete();
 	}
 	
 	@Schedules({@Schedule(hour = "*", minute = "*", second = "*/15")})
@@ -107,12 +111,12 @@ public class RunHandshake {
 		 for(String ip : centriips) {
 		try {
  //90a7ba91
-			s = read("http://6de06cf7.ngrok.io/SecondPhase/rest/node");
+			s = read(non_master+"/SecondPhase/rest/node");
 			System.out.println("At " + new java.util.Date()+", Alive nodes are:");
 			if(s==null) {
 			 
 				System.out.println("Trying again: Node " +  ip);
-				s = read("http://6de06cf7.ngrok.io/SecondPhase/rest/node");
+				s = read(non_master+"/SecondPhase/rest/node");
 				
 				if(s==null) {
 					System.out.println("Node "+ ip+" is down!");

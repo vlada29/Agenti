@@ -162,19 +162,6 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 
 	}
 	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@DELETE
 	@Path("/{alias}")
 	public void removeNode(@PathParam("alias") String alias) {
