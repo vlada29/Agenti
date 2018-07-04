@@ -25,6 +25,7 @@ export class WorkspaceComponent implements OnInit {
   
   private primljenaPoruka;
   private ws;
+  private ws2;
 
   constructor(private agent_service: AgentService) { }
 
@@ -38,7 +39,11 @@ export class WorkspaceComponent implements OnInit {
         console.log(this.primljenaPoruka);
 
 		document.getElementById('messagesDiv').innerHTML += '<div>' + this.primljenaPoruka + '</div>';
+    }
     
+    this.ws2 = new WebSocket('ws://localhost:8080/SescondPhase/refresher/vlada');
+    this.ws2.onmessage = (event) => {
+    	this.agent_service.getRunningAgents().subscribe(data => this.allRunningAgents = data);
     }
   }
 

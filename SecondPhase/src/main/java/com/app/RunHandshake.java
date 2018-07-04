@@ -43,7 +43,7 @@ public class RunHandshake {
 	INodeUtils centerUtils;
 	public static ArrayList<String> centriips = new ArrayList<String>(Arrays.asList("79.175.95.73"));
 	public static String master = "http://fd93c256.ngrok.io";
-	public static String non_master="http://6de06cf7.ngrok.io";
+	public static String non_master="http://21e23fa0.ngrok.io";
 	// @Schedule(hour = "*", minute = "*", persistent = false)
     protected void init(Timer timer)
     {
@@ -52,7 +52,7 @@ public class RunHandshake {
     }
 	
 	
-	@PostConstruct
+	//@PostConstruct
 	public void tryHandshake() {
 		Thread thread = new Thread() {
 	        @Override

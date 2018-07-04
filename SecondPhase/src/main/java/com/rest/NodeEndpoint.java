@@ -84,7 +84,7 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 		
 		
 		//updateAllCenters(newCenter);
-		
+		//updateRunningAgents(centerUtils.getRunning());
 	}
 	//POST /node
 	public void updateAllCenters(AgentskiCentar newCenter){
@@ -126,10 +126,17 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	}
 	
 	//POST /agents/running
-	public void updateRunningAgents(Collection<AgentType> types, AgentskiCentar new_ac){
+	public void updateRunningAgents(List<Agent> running){
+		System.out.println("Running:");
+		for(Agent a : running) {
+			a.getAid().toString();
+			
+		}
+		running.add(new Agent());
+		System.out.println("Slanje Aktivnih agenata non master-u");
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://" + new_ac.getAddress() + ":8080/SecondPhase/agent/running");
-		Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));	 
+		ResteasyWebTarget target = client.target(RunHandshake.non_master+"/SecondPhase/agents/running");
+		Response response = target.request().post(Entity.entity(new Gson().toJson(running), MediaType.APPLICATION_JSON));	 
 		 
 	}
 	
