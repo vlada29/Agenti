@@ -22,6 +22,7 @@ public class NodeUtils implements INodeUtils{
 	private List<AgentskiCentar> agentCenters;
 	private List<AgentType> supportedTypes;
 	private List<Agent> runningAgents;
+	private List<Agent> agentTypes2;
 	
 	@Override
 	public List<AgentType> getSupportedTypes() {
@@ -57,6 +58,7 @@ public class NodeUtils implements INodeUtils{
 	public void initCenters() {
 		agentCenters = new ArrayList<AgentskiCentar>();
 		supportedTypes = new ArrayList<AgentType>();
+		agentTypes2 = new ArrayList<Agent>();
 		AgentType at1 = new AgentType("module1","non_master_name1");
 		AgentType at2 = new AgentType("module2","non_master_name2");
 		AgentType at3 = new AgentType("module2","non_master_name3");
@@ -84,6 +86,10 @@ public class NodeUtils implements INodeUtils{
 		a1.setAid(aid1);
 		a2.setAid(aid2);
 		
+		
+		agentTypes2.add(a1);
+		agentTypes2.add(a2);
+		
 		runningAgents = new ArrayList<Agent>();
 		
 		agentCenters.add(ac1);
@@ -103,6 +109,12 @@ public class NodeUtils implements INodeUtils{
 
 	public void setLocalCenter(AgentskiCentar localCenter) {
 		this.localCenter = localCenter;
+	}
+	
+	
+	@Override
+	public List<Agent> getAgentTypes2() {
+		return agentTypes2;
 	}
 
 	@Override

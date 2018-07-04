@@ -8,7 +8,7 @@ export class AgentService {
 
   constructor(private http: HttpClient) { }
 
-  public prefiks = "/SecondPhase/rest";
+  public prefiks = "SecondPhase/rest";
 
   public getAgentsTypes(){
     var agents: IAgent[];
@@ -25,7 +25,7 @@ export class AgentService {
   }
 
   public getRunningAgents(): Observable<IAgent[]>{
-    return this.http.get<IAgent[]>(this.prefiks+'/agents/running/');
+    return this.http.get<IAgent[]>(this.prefiks+'/agents/running');
   }
 
   public pokreniAgenta(type,name):Observable<any>{

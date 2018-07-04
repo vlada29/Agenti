@@ -21,4 +21,5 @@ public interface INodeUtils {
 	public List<Agent> getRunning();
 	public void pokreniAgenta(AgentType type,String name);
 	public void zaustaviAgenta(AID aid);
+	public List<Agent> getAgentTypes2();
 }

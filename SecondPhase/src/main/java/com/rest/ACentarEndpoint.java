@@ -36,15 +36,9 @@ public class ACentarEndpoint {
 	@GET
 	@Path("/classes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getClasses() throws JsonProcessingException {
-		System.out.println("Getting classes");
-		centerUtils.getSupportedTypes();
-		
-		//Gson g = new Gson();
-		ObjectMapper mapper = new ObjectMapper();
-
-		   String u = mapper.writeValueAsString( centerUtils.getSupportedTypes());
-		   return u;
+	public List<Agent> getClasses() {
+		System.out.println("dobavalj klase");
+		return centerUtils.getAgentTypes2();
 	}
 	
 	@GET
