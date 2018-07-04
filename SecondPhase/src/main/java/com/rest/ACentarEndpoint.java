@@ -50,9 +50,9 @@ public class ACentarEndpoint {
 	}
 	
 	@PUT
-	@Path("/running/{type}/{name}")
+	@Path("/running/{name}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Agent pokreniAgenta(@PathParam("type") String type,@PathParam("name") String name) {
+	public Agent pokreniAgenta(String type,@PathParam("name") String name) {
 		System.out.println("pokrece se agent "+name);
 		Gson g = new Gson();
 		AgentType at = g.fromJson(type, AgentType.class);
@@ -61,9 +61,9 @@ public class ACentarEndpoint {
 	}
 	
 	@DELETE
-	@Path("/running/{aid}")
+	@Path("/running")
 	@Produces(MediaType.APPLICATION_JSON)
-	public AID zaustaviAgenta(@PathParam("aid") String aid) {
+	public AID zaustaviAgenta(String aid) {
 		Gson g = new Gson();
 		AID a = g.fromJson(aid, AID.class);
 		System.out.println("Zaustavljanje agenta");

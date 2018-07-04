@@ -29,11 +29,11 @@ export class AgentService {
   }
 
   public pokreniAgenta(type,name):Observable<any>{
-    return this.http.put(this.prefiks+'/agents/running/'+type+'/'+name,{});
+    return this.http.put(this.prefiks+'/agents/running/'+name,type);
   }
 
   public zaustaviAgenta(aid): Observable<any>{
-    return this.http.delete(this.prefiks+'/agents/running/'+aid);
+    return this.http.delete(this.prefiks+'/agents/running/',aid);
   }
 
   public posaljiPoruku(message): Observable<any>{
