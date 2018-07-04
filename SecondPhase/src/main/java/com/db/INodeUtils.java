@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.model.AID;
+import com.model.Agent;
 import com.model.AgentType;
 import com.model.AgentskiCentar;
 
@@ -16,5 +18,8 @@ public interface INodeUtils {
 	public AgentskiCentar getCentarByAlias(String alias);
 	public String getMasterAlias();
 	public List<AgentType> getSupportedTypes();
-	
+	public List<Agent> getRunning();
+	public void pokreniAgenta(AgentType type,String name);
+	public void zaustaviAgenta(AID aid);
+	public List<Agent> getAgentTypes2();
 }

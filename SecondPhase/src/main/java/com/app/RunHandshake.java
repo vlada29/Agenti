@@ -11,8 +11,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.Timer;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,29 +35,43 @@ public class RunHandshake {
 	@EJB
 	INodeUtils centerUtils;
 	
+	// @Schedule(hour = "*", minute = "*", persistent = false)
+    protected void init(Timer timer)
+    {
+       tryHandshake();
+    //   timer.cancel();
+    }
+	
+	
 	//@PostConstruct
 	public void tryHandshake() {
-		System.out.println("Try to register on master");
-		ResteasyClient client = new ResteasyClientBuilder().build();
-		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/SecondPhase/rest/node");	
-		target.request().get();
-		
-		
-		try {
-			System.out.println(getIp());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		tryRegister();
+		Thread thread = new Thread() {
+	        @Override
+	        public void run() {
+			System.out.println("Try to register on master");
+			ResteasyClient client = new ResteasyClientBuilder().build();
+			//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
+			ResteasyWebTarget target = client.target("http://90a7ba91.ngrok.io/SecondPhase/rest/node");	
+			target.request().get();
+			
+			
+			try {
+				System.out.println(getIp());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			tryRegister();
+	        }
+		};
+		thread.start();
 	}
 	
 	public void tryRegister(){
 		System.out.println("Try to register on master");
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		//ResteasyWebTarget target = client.target("http://192.168.102.61:8080/PhaseTwo/rest/node/");
-		ResteasyWebTarget target = client.target("http://3334f2d2.ngrok.io/SecondPhase/rest/node");	
+		ResteasyWebTarget target = client.target("http://90a7ba91.ngrok.io/SecondPhase/rest/node");	
 		AgentskiCentar ac = new AgentskiCentar();
 		try {
 			ac.setAddress(getIp());
