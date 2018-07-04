@@ -58,7 +58,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   zaustaviAgenta(){
-    this.agent_service.zaustaviAgenta(this.selektovanPokrenutAgent.id).subscribe(
+    this.agent_service.zaustaviAgenta(this.selektovanPokrenutAgent.id.name).subscribe(
       data => { this.agent_service.getRunningAgents().subscribe(data => this.allRunningAgents = data); },
       error => { alert("Greska"); }
     );

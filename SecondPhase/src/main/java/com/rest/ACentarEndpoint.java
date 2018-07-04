@@ -65,13 +65,12 @@ public class ACentarEndpoint {
 	}
 	
 	@DELETE
-	@Path("/running")
+	@Path("/delete/{name}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public AID zaustaviAgenta(String aid) {
-		Gson g = new Gson();
-		AID a = g.fromJson(aid, AID.class);
-		System.out.println("Zaustavljanje agenta");
-		centerUtils.zaustaviAgenta(a);
-		return a;
+	public AID zaustaviAgenta(@PathParam("name") String name) {
+
+		System.out.println("Zaustavljanje agenta --- "+name);
+		centerUtils.zaustaviAgenta(name);
+		return new AID();
 	}
 }
