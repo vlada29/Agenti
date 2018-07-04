@@ -20,6 +20,6 @@ public interface INodeUtils {
 	public List<AgentType> getSupportedTypes();
 	public List<Agent> getRunning();
 	public void pokreniAgenta(AgentType type,String name);
-	public void zaustaviAgenta(AID aid);
+	public void zaustaviAgenta(String aid);
 	public List<Agent> getAgentTypes2();
 }

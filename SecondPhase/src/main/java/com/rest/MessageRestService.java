@@ -26,12 +26,11 @@ public class MessageRestService {
 	}
 	
 	@POST
-	@Path("/messages")
+	@Path("/poruka")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public ACLMessage postMessage(ACLMessage msg) {
-		System.out.println("Primljena poruka "+msg.toString());
-		return msg;
+	public ACLMessage postMessage(String msg) {
+		System.out.println("Primljena poruka "+msg);
+		return new ACLMessage();
 	}
 
 }

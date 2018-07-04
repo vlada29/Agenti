@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IAgent } from "../interfaces/IAgent";
+import { IACLMessage } from "../interfaces/IACLMessage";
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 
@@ -33,11 +34,13 @@ export class AgentService {
   }
 
   public zaustaviAgenta(aid): Observable<any>{
-    return this.http.delete(this.prefiks+'/agents/running/',aid);
+	  console.log(aid);
+    return this.http.delete(this.prefiks+'/agents/delete/'+aid);
   }
 
   public posaljiPoruku(message): Observable<any>{
-    return this.http.post(this.prefiks+'/message/messages',message);
+	  console.log(message);
+    return this.http.post<IACLMessage>(this.prefiks+'/message/poruka',message);
   }
   
 }

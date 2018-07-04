@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
@@ -13,6 +14,7 @@ import com.model.AID;
 import com.model.Agent;
 import com.model.AgentType;
 import com.model.AgentskiCentar;
+import com.rest.WsLogger;
 
 @Startup
 @Singleton
@@ -22,9 +24,11 @@ public class NodeUtils implements INodeUtils{
  
 	private List<AgentskiCentar> agentCenters;
 	private List<AgentType> supportedTypes;
-	private List<Agent> runningAgents;
+	private List<Agent> runningAgents = new ArrayList<Agent>();
 	private List<Agent> agentTypes2;
  
+	@EJB
+	WsLogger logger;
 	
 	@Override
 	public List<AgentType> getSupportedTypes() {
@@ -91,8 +95,7 @@ public class NodeUtils implements INodeUtils{
 		
 		agentTypes2.add(a1);
 		agentTypes2.add(a2);
-		
-		runningAgents = new ArrayList<Agent>();
+
 		
 		agentCenters.add(ac1);
 	}
@@ -160,16 +163,20 @@ public class NodeUtils implements INodeUtils{
 		aid.setHost(localCenter);
 		a.setAid(aid);
 		runningAgents.add(a);
+		logger.send("Pokrenut agent: "+name, "vlada");
 	}
 
+
+
 	@Override
-	public void zaustaviAgenta(AID aid) {
+	public void zaustaviAgenta(String aid) {
 		for(Agent a : runningAgents) {
-			if(a.getAid().equals(aid)) {
+			if(a.getAid().getName().equals(aid)) {
 				runningAgents.remove(a);
 				break;
 			}
 		}
+		logger.send("Zaustavljen agent: "+aid, "vlada");
 		
 	}
  

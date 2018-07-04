@@ -15,7 +15,7 @@
       </ul>
       <hr>
       <h3>Pokrenuti agenti</h3>
-      <ul class="nav nav-pills nav-stacked" *ngFor="let a of allAgentTypes">
+      <ul class="nav nav-pills nav-stacked" *ngFor="let a of allRunningAgents">
           <li><a data-toggle="pill" data-toggle="collapse" data-target="#demo2" (click)="setSelektovanPokrenutAgent(a)">{{a.id.type.module}}/{{a.id.type.name}}</a></li>
       </ul>  
       </div>
