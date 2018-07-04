@@ -31,6 +31,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.app.RunHandshake;
 import com.db.INodeUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,13 +59,15 @@ public class NodeEndpoint implements RemoteNodeEndpoint{
 	public void registerNode(AgentskiCentar newCenter) {
 		System.out.println("Registracija novog cvora, with address: " + newCenter.getAddress());
 		centerUtils.addNode(newCenter);
+		RunHandshake.centriips.add("79.175.95.73");
+		//RunHandshake.centriips.add(newCenter.getAddress());
 		
 		//GET /agents/classes	 
 		String s = "";
 		try {
 			//s = read("http://7fbd0a86.ngrok.io/SecondPhase/rest/agents/test");
 			//s = read("http://" + newCenter.getAddress() + ":8080/SecondPhase/rest/agents/test");
-			s = read("http://7fbd0a86.ngrok.io/SecondPhase/rest/agents/classes");
+			s = read("http://6de06cf7.ngrok.io/SecondPhase/rest/agents/classes");
 		} catch (Exception e) {
 			 
 			e.printStackTrace();

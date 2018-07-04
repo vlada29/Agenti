@@ -20,8 +20,8 @@ import com.model.AgentskiCentar;
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 public class NodeUtils implements INodeUtils{
  
-	private List<AgentskiCentar> agentCenters;
-	private List<AgentType> supportedTypes;
+	private List<AgentskiCentar> agentCenters = new ArrayList<AgentskiCentar>();
+	private List<AgentType> supportedTypes = new ArrayList<AgentType>();
 	private List<Agent> runningAgents;
 	private List<Agent> agentTypes2;
  
